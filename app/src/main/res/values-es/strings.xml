@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auto">Auto</string>
+    <string name="cool">Frío</string>
+    <string name="dry">Deshumidificador</string>
+    <string name="fan">Ventilador</string>
+    <string name="heat">Calor</string>
+    <string name="scale">ºC</string>
+    <string name="connection_error">No se han podido hacer los cambios. Error de conexión</string>
+    <string name="mode_description">Modo</string>
+    <string name="off_description">Apagado</string>
+    <string name="tempplus_description">Añadir un grado</string>
+    <string name="temp_description">Temperatura</string>
+    <string name="tempminus_description">Quitar un grado</string>
+    <string name="swing_description">Balanceo</string>
+    <string name="settings_menu_item">Preferencias</string>
+    <string name="settings_title">Preferencias de UpPiDown</string>
+    <string name="settings_address_label">Dirección del servidor</string>
+    <string name="settings_port_label">Puerto del servidor</string>
+    <string name="settings_username_label">Usuario</string>
+    <string name="settings_password_label">Contraseña</string>
+    <string name="server_data_missing">Faltan los datos del servidor. Por favor, vaya a Preferencias para completarlos</string>
+    <string name="send_description">Enviar código</string>
+    <string name="onoff_description">Encendido / Apagado</string>
+    <string name="is_off_message">El sistema está apagado. No se puede cambiar el swing</string>
+</resources>

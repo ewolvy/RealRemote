@@ -1,5 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">RealRemote</string>
-    <string name="action_settings">Settings</string>
-    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="app_name" translatable="false">Real Remote</string>
+    <string name="cool">Cool</string>
+    <string name="dry">Dry</string>
+    <string name="heat">Heat</string>
+    <string name="fan">Fan</string>
+    <string name="temperature" translatable="false">27</string>
+    <string name="scale">ºC</string>
+    <string name="connection_error">Could not make the changes. Connection error</string>
+    <string name="sign_fan" translatable="false"><![CDATA[>>>]]></string>
+    <string name="mode_description">Mode</string>
+    <string name="off_description">Off</string>
+    <string name="tempplus_description">Plus one degree</string>
+    <string name="temp_description">Temperature</string>
+    <string name="tempminus_description">Minus one degree</string>
+    <string name="swing_description">Swing</string>
+    <string name="settings_menu_item">Settings</string>
+    <string name="settings_title">UpPiDown settings</string>
+    <string name="settings_address_label">Server address</string>
+    <string name="settings_address_key" translatable="false">address</string>
+    <string name="settings_port_label">Server port</string>
+    <string name="settings_port_key" translatable="false">port</string>
+    <string name="settings_username_key" translatable="false">username</string>
+    <string name="settings_username_label">Username</string>
+    <string name="settings_password_key" translatable="false">password</string>
+    <string name="settings_password_label">Password</string>
+    <string name="server_data_missing">Server data is missing. Please go to settings and complete them</string>
+    <string name="send_description">Send code</string>
+    <string name="onoff_description">On / Off</string>
+    <string name="is_off_message">System is Off. Can\'t change swing</string>
+    <string name="auto">Auto</string>
+
+    <string-array name="AAArray">
+        <item>Salón</item>
+        <item>Dormitorio</item>
+    </string-array>
 </resources>
