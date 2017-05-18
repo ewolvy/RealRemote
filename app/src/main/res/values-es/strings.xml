@@ -23,4 +23,5 @@
     <string name="send_description">Enviar código</string>
     <string name="onoff_description">Encendido / Apagado</string>
     <string name="is_off_message">El sistema está apagado. No se puede cambiar el swing</string>
+    <string name="action_settings">Opciones</string>
 </resources>

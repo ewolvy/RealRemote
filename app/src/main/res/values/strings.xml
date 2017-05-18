@@ -30,7 +30,7 @@
     <string name="onoff_description">On / Off</string>
     <string name="is_off_message">System is Off. Can\'t change swing</string>
     <string name="auto">Auto</string>
-
+    <string name="action_settings">Settings</string>
     <string-array name="AAArray">
         <item>Salón</item>
         <item>Dormitorio</item>
