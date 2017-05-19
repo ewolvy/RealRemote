@@ -14,7 +14,7 @@
     <string name="tempminus_description">Quitar un grado</string>
     <string name="swing_description">Balanceo</string>
     <string name="settings_menu_item">Preferencias</string>
-    <string name="settings_title">Preferencias de UpPiDown</string>
+    <string name="settings_title">Preferencias de Real Remote</string>
     <string name="settings_address_label">Dirección del servidor</string>
     <string name="settings_port_label">Puerto del servidor</string>
     <string name="settings_username_label">Usuario</string>
@@ -24,4 +24,5 @@
     <string name="onoff_description">Encendido / Apagado</string>
     <string name="is_off_message">El sistema está apagado. No se puede cambiar el swing</string>
     <string name="action_settings">Opciones</string>
+    <string name="settings_certificate_label">Archivo del certificado SSL</string>
 </resources>

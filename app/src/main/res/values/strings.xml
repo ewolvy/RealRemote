@@ -16,7 +16,7 @@
     <string name="tempminus_description">Minus one degree</string>
     <string name="swing_description">Swing</string>
     <string name="settings_menu_item">Settings</string>
-    <string name="settings_title">UpPiDown settings</string>
+    <string name="settings_title">Real Remote settings</string>
     <string name="settings_address_label">Server address</string>
     <string name="settings_address_key" translatable="false">address</string>
     <string name="settings_port_label">Server port</string>
@@ -25,6 +25,8 @@
     <string name="settings_username_label">Username</string>
     <string name="settings_password_key" translatable="false">password</string>
     <string name="settings_password_label">Password</string>
+    <string name="settings_certificate_key" translatable="false">certificate</string>
+    <string name="settings_certificate_label">SSL certificate file</string>
     <string name="server_data_missing">Server data is missing. Please go to settings and complete them</string>
     <string name="send_description">Send code</string>
     <string name="onoff_description">On / Off</string>
