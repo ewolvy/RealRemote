@@ -25,4 +25,5 @@
     <string name="is_off_message">El sistema está apagado. No se puede cambiar el swing</string>
     <string name="action_settings">Opciones</string>
     <string name="settings_certificate_label">Archivo del certificado SSL</string>
+    <string name="settings_file_label">Archivo de certificado</string>
 </resources>

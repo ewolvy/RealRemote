@@ -1,6 +1,9 @@
 package com.mooo.ewolvy.realremote;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.os.Environment;
+import android.preference.Preference;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +19,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.File;
+
+import ar.com.daidalos.afiledialog.FileChooserDialog;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,17 +56,6 @@ public class MainActivity extends AppCompatActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
     }
 
 
@@ -84,6 +81,25 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void click(View view) {
+        FileChooserDialog dialog = new FileChooserDialog(MainActivity.this);
+        String path = Environment.getExternalStorageDirectory() + "/Download/";
+        dialog.loadFolder(path);
+        dialog.addListener(new FileChooserDialog.OnFileSelectedListener() {
+            public void onFileSelected(Dialog source, File file) {
+                source.hide();
+                Toast toast = Toast.makeText(source.getContext(), "File selected: " + file.getName(), Toast.LENGTH_LONG);
+                toast.show();
+            }
+            public void onFileSelected(Dialog source, File folder, String name) {
+                source.hide();
+                Toast toast = Toast.makeText(source.getContext(), "File created: " + folder.getName() + "/" + name, Toast.LENGTH_LONG);
+                toast.show();
+            }
+        });
+        dialog.show();
     }
 
     /**

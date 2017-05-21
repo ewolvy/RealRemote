@@ -1,3 +1,2 @@
-include ':app'
-include ':libs:aFileDialog'
-project(':libs:aFileDialog').projectDir = new File(settingsDir, 'libs/aFileDialog/library')
+include ':app', ':aFileDialog'
+project(':aFileDialog').projectDir = new File('libs/aFileDialog/library/app')
