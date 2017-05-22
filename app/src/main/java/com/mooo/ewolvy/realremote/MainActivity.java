@@ -83,25 +83,6 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void click(View view) {
-        FileChooserDialog dialog = new FileChooserDialog(MainActivity.this);
-        String path = Environment.getExternalStorageDirectory() + "/Download/";
-        dialog.loadFolder(path);
-        dialog.addListener(new FileChooserDialog.OnFileSelectedListener() {
-            public void onFileSelected(Dialog source, File file) {
-                source.hide();
-                Toast toast = Toast.makeText(source.getContext(), "File selected: " + file.getName(), Toast.LENGTH_LONG);
-                toast.show();
-            }
-            public void onFileSelected(Dialog source, File folder, String name) {
-                source.hide();
-                Toast toast = Toast.makeText(source.getContext(), "File created: " + folder.getName() + "/" + name, Toast.LENGTH_LONG);
-                toast.show();
-            }
-        });
-        dialog.show();
-    }
-
     /**
      * A placeholder fragment containing a simple view.
      */
