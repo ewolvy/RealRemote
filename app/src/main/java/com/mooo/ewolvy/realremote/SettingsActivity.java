@@ -92,14 +92,14 @@ public class SettingsActivity extends AppCompatActivity {
             path = fullPath;
         }else{
             File file = new File (fullPath);
-            path = file.getAbsolutePath();
+            path = file.getParent();
         }
         dialog.loadFolder(path);
         dialog.addListener(new FileChooserDialog.OnFileSelectedListener() {
             public void onFileSelected(Dialog source, File file) {
                 source.hide();
                 Toast toast = Toast.makeText(source.getContext(),
-                        "File selected: " + file.getAbsoluteFile(),
+                        source.getContext().getString(R.string.settings_selected_file) + file.getAbsoluteFile(),
                         Toast.LENGTH_LONG);
                 toast.show();
                 SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(source.getContext());

@@ -34,8 +34,9 @@
     <string name="auto">Auto</string>
     <string name="action_settings">Settings</string>
     <string name="settings_file_label">Certificate file</string>
-    <string name="settings_file_key">certificate</string>
+    <string name="settings_file_key" translatable="false">certificate</string>
     <string name="no_file_permission">Accessing files is required for SSL communication</string>
+    <string name="settings_selected_file">"Selected file: "</string>
     <string-array name="AAArray">
         <item>Salón</item>
         <item>Dormitorio</item>
