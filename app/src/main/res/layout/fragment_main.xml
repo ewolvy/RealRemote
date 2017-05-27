@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -6,7 +7,234 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.mooo.ewolvy.realremote.MainActivity$PlaceholderFragment">
+    tools:context="com.mooo.ewolvy.realremote.MainActivity"
+    android:id="@+id/controlsFragment">
 
+    <LinearLayout
+        android:id="@+id/modeListLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="80sp"
+        android:orientation="vertical"
+        android:padding="4dp">
+        <TextView
+            android:id="@+id/autoMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:text="@string/auto"
+            android:visibility="visible" />
+        <TextView
+            android:id="@+id/coolMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:text="@string/cool"
+            android:visibility="invisible" />
+        <TextView
+            android:id="@+id/dryMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:text="@string/dry"
+            android:visibility="invisible" />
+        <TextView
+            android:id="@+id/heatMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:text="@string/heat"
+            android:visibility="invisible" />
+        <TextView
+            android:id="@+id/fanMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:text="@string/fan"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/lineView"
+        android:layout_width="1dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="25dp"
+        android:layout_toEndOf="@id/modeListLayout"
+        android:background="@android:color/black" />
+
+    <ImageView
+        android:id="@+id/onOffSign"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignEnd="@id/modeListLayout"
+        android:contentDescription="@string/onoff_description"
+        android:src="@drawable/onoff_symbol"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/tempView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_toEndOf="@id/lineView"
+        android:gravity="center"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:text="@string/temperature"
+        android:textSize="100sp"
+        android:visibility="visible" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_toEndOf="@id/tempView"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:text="@string/scale"
+        android:textSize="24sp"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/fanShowCurrent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tempView"
+        android:layout_marginStart="12dp"
+        android:layout_toEndOf="@id/lineView"
+        android:background="@android:color/black"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="center_vertical"
+        android:padding="2dp"
+        android:text="@string/fan"
+        android:textAllCaps="true"
+        android:textColor="@android:color/white"
+        android:visibility="visible" />
+    <TextView
+        android:id="@+id/fanLevel1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/fanShowCurrent"
+        android:layout_gravity="center_vertical"
+        android:layout_toEndOf="@id/fanShowCurrent"
+        android:fontFamily="sans-serif-condensed"
+        android:paddingLeft="1dp"
+        android:paddingRight="1dp"
+        android:text="@string/sign_fan"
+        android:visibility="invisible" />
+    <TextView
+        android:id="@+id/fanLevel2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/fanShowCurrent"
+        android:layout_gravity="center_vertical"
+        android:layout_toEndOf="@id/fanLevel1"
+        android:fontFamily="sans-serif-condensed"
+        android:paddingLeft="1dp"
+        android:paddingRight="1dp"
+        android:text="@string/sign_fan"
+        android:visibility="invisible" />
+    <TextView
+        android:id="@+id/fanLevel3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/fanShowCurrent"
+        android:layout_gravity="center_vertical"
+        android:layout_toEndOf="@id/fanLevel2"
+        android:fontFamily="sans-serif-condensed"
+        android:paddingLeft="1dp"
+        android:paddingRight="1dp"
+        android:text="@string/sign_fan"
+        android:visibility="invisible" />
+    <TextView
+        android:id="@+id/fanLevelAuto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/fanShowCurrent"
+        android:layout_gravity="center_vertical"
+        android:layout_toEndOf="@id/fanLevel3"
+        android:fontFamily="sans-serif-condensed"
+        android:paddingLeft="1dp"
+        android:paddingRight="1dp"
+        android:text="@string/auto"
+        android:textAllCaps="true"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/tempPlus"
+        android:layout_width="96dp"
+        android:layout_height="32dp"
+        android:layout_below="@id/fanShowCurrent"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="48dp"
+        android:contentDescription="@string/tempplus_description"
+        android:src="@drawable/temp_plus"/>
+    <ImageView
+        android:id="@+id/tempMiddle"
+        android:layout_width="96dp"
+        android:layout_height="32dp"
+        android:layout_below="@id/tempPlus"
+        android:layout_centerInParent="true"
+        android:contentDescription="@string/temp_description"
+        android:src="@drawable/temp_middle"/>
+    <ImageView
+        android:id="@+id/tempMinus"
+        android:layout_width="96dp"
+        android:layout_height="32dp"
+        android:layout_below="@id/tempMiddle"
+        android:layout_centerInParent="true"
+        android:contentDescription="@string/tempminus_description"
+        android:src="@drawable/temp_minus"/>
+
+    <ImageView
+        android:id="@+id/fanButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_toEndOf="@id/tempMiddle"
+        android:layout_alignBottom="@id/tempMinus"
+        android:layout_marginBottom="24dp"
+        android:layout_marginStart="48dp"
+        android:contentDescription="@string/fan"
+        android:src="@drawable/fan"/>
+    <ImageView
+        android:id="@+id/modeButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_toStartOf="@id/tempMiddle"
+        android:layout_alignBottom="@id/tempMinus"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="48dp"
+        android:contentDescription="@string/mode_description"
+        android:src="@drawable/mode" />
+
+    <ImageView
+        android:id="@+id/offButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/tempMinus"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="48dp"
+        android:contentDescription="@string/off_description"
+        android:src="@drawable/off" />
+    <ImageView
+        android:id="@+id/sendButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/tempMinus"
+        android:layout_toStartOf="@id/offButton"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="48dp"
+        android:contentDescription="@string/send_description"
+        android:src="@drawable/send" />
+    <ImageView
+        android:id="@+id/swingButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/tempMinus"
+        android:layout_toEndOf="@id/offButton"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="48dp"
+        android:contentDescription="@string/swing_description"
+        android:src="@drawable/swing" />
 
 </RelativeLayout>
