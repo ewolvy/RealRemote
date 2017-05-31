@@ -31,7 +31,8 @@ public class MainActivity extends AppCompatActivity {
       may be best to switch to a
       {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
-        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        SectionsPagerAdapter mSectionsPagerAdapter =
+                new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
         /*
@@ -58,7 +59,8 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent settingsIntent = new Intent(this, com.mooo.ewolvy.realremote.SettingsActivity.class);
+            Intent settingsIntent = new Intent(this,
+                    com.mooo.ewolvy.realremote.SettingsActivity.class);
             startActivity(settingsIntent);
             return true;
         }

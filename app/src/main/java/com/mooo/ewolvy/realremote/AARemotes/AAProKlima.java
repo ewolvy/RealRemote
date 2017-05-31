@@ -13,12 +13,14 @@ public class AAProKlima extends AASuper{
                       int stateFan,
                       int stateTemp,
                       boolean stateOn,
-                      String statePath){
+                      String statePath,
+                      String stateCertificate){
         super();
 
         TEMP_MIN = 18;
         TEMP_MAX = 32;
-        serverPath = statePath;
+        setServerPath(statePath);
+        setCertificateFile(stateCertificate);
 
         // Indicar que todos los modos están disponibles
         for (int x = 0; x<5; x++){AVAILABLE_MODES[x] = true;}
@@ -29,40 +31,40 @@ public class AAProKlima extends AASuper{
             setMode (AUTO_MODE);
         }
 
-        isOn = stateOn;
-        activeFan = (getMode() != AUTO_MODE) && (getMode() != DRY_MODE);
-        activeTemp = getMode() != FAN_MODE;
+        setOn(stateOn);
+        setActiveFan ((getMode() != AUTO_MODE) && (getMode() != DRY_MODE));
+        setActiveTemp(getMode() != FAN_MODE);
 
         if (!setFan (stateFan)){
             setFan (AUTO_FAN);
         }
 
         if (stateTemp < TEMP_MIN || stateTemp > TEMP_MAX){
-            currentTemp = (TEMP_MIN + TEMP_MAX) / 2;
+            setCurrentTemp((TEMP_MIN + TEMP_MAX) / 2);
         }else{
-            currentTemp = stateTemp;
+            setCurrentTemp(stateTemp);
         }
     }
 
     public String getCommand (){
         String command = "";
 
-        switch (currentMode) {
+        switch (getMode()) {
             case HEAT_MODE:
             case COOL_MODE:
-                command = String.valueOf(currentTemp);
-                command = command + '_' + MODES[currentMode];
-                command = command + '_' + FAN_MODES[currentFan];
+                command = String.valueOf(getCurrentTemp());
+                command = command + '_' + MODES[getMode()];
+                command = command + '_' + FAN_MODES[getFan()];
                 break;
             case DRY_MODE:
                 command = "00_";
                 command = command + DRY_CODE;
-                command = command + FAN_MODES[currentFan];
+                command = command + FAN_MODES[getFan()];
                 break;
             case FAN_MODE:
                 command = "00";
                 command = command + FAN_CODE;
-                command = command + FAN_MODES[currentFan];
+                command = command + FAN_MODES[getFan()];
                 break;
         }
 

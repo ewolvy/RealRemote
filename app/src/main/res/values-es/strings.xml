@@ -28,4 +28,7 @@
     <string name="settings_file_label">Archivo de certificado</string>
     <string name="no_file_permission">Acceder a los archivos es necesario para la comunicación SSL</string>
     <string name="settings_selected_file">"Archivo seleccionado: "</string>
+    <string name="settings_name_label">Nombre</string>
+    <string name="settings_brand_label">Marca</string>
+    <string name="settings_alias_label">Alias</string>
 </resources>

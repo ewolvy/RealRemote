@@ -133,14 +133,16 @@ public class ControlsFragment extends Fragment {
                         fan,
                         temperature,
                         isOn,
-                        "AAKaysun");
+                        "AAKaysun",
+                        "");
                 break;
             case 1:
                 state = new AAProKlima(mode,
                         fan,
                         temperature,
                         isOn,
-                        "AAProKlima");
+                        "AAProKlima",
+                        "");
                 break;
         }
         updateView();

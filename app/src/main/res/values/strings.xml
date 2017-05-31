@@ -37,8 +37,12 @@
     <string name="settings_file_key" translatable="false">certificate</string>
     <string name="no_file_permission">Accessing files is required for SSL communication</string>
     <string name="settings_selected_file">"Selected file: "</string>
+    <string name="settings_name_label">Name</string>
+    <string name="transition_name" translatable="false">transition_name</string>
+    <string name="settings_brand_label">Brand</string>
+    <string name="settings_alias_label">Alias</string>
     <string-array name="AAArray">
-        <item>Salón</item>
-        <item>Dormitorio</item>
+        <item>Kaysun</item>
+        <item>ProKlima</item>
     </string-array>
 </resources>

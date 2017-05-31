@@ -18,13 +18,15 @@ public class AAKaysun extends AASuper {
                     int stateFan,
                     int stateTemp,
                     boolean stateOn,
-                    String statePath){
+                    String statePath,
+                    String stateCertificate){
         super();
 
         TEMP_MIN = 17;
         TEMP_MAX = 30;
 
-        serverPath = statePath;
+        setCertificateFile(stateCertificate);
+        setServerPath(statePath);
 
         // Indicar que todos los modos están disponibles
         for (int x = 0; x<5; x++){AVAILABLE_MODES[x] = true;}
@@ -33,18 +35,20 @@ public class AAKaysun extends AASuper {
             setMode (AUTO_MODE);
         }
 
-        isOn = stateOn;
-        activeFan = (getMode() != AUTO_MODE) && (getMode() != DRY_MODE);
-        activeTemp = getMode() != FAN_MODE;
+        setOn (stateOn);
+
+        setActiveFan((getMode() != AUTO_MODE) && (getMode() != DRY_MODE));
+
+        setActiveTemp((getMode() != FAN_MODE));
 
         if (!setFan (stateFan)){
             setFan (AUTO_FAN);
         }
 
         if (stateTemp < TEMP_MIN || stateTemp > TEMP_MAX){
-            currentTemp = (TEMP_MIN + TEMP_MAX) / 2;
+            setCurrentTemp((TEMP_MIN + TEMP_MAX) / 2);
         }else{
-            currentTemp = stateTemp;
+            setCurrentTemp(stateTemp);
         }
     }
 
@@ -52,9 +56,9 @@ public class AAKaysun extends AASuper {
         String command = INIT_CHAIN;
 
         if (isActiveFan()) {
-            command = command + FAN_MODES[currentFan];
+            command = command + FAN_MODES[getFan()];
             command = command + "F";
-            command = command + REVERSE_FAN_MODES[currentFan];
+            command = command + REVERSE_FAN_MODES[getFan()];
             command = command + "0";
         }else{
             command = command + FAN_MODES[SPECIAL_FAN];
@@ -64,15 +68,15 @@ public class AAKaysun extends AASuper {
         }
 
         if (isActiveTemp()) {
-            command = command + TEMPS[currentTemp - TEMP_MIN];
-            command = command + MODES[currentMode];
-            command = command + REVERSE_TEMPS[currentTemp - TEMP_MIN];
-            command = command + REVERSE_MODES[currentMode];
+            command = command + TEMPS[getCurrentTemp() - TEMP_MIN];
+            command = command + MODES[getMode()];
+            command = command + REVERSE_TEMPS[getCurrentTemp()- TEMP_MIN];
+            command = command + REVERSE_MODES[getMode()];
         }else{
             command = command + TEMPS[TEMP_MAX + 1];
-            command = command + MODES[currentMode];
+            command = command + MODES[getMode()];
             command = command + REVERSE_TEMPS[TEMP_MAX + 1];
-            command = command + REVERSE_MODES[currentMode];
+            command = command + REVERSE_MODES[getMode()];
         }
 
         return command;
