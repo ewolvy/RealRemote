@@ -41,6 +41,10 @@
     <string name="transition_name" translatable="false">transition_name</string>
     <string name="settings_brand_label">Brand</string>
     <string name="settings_alias_label">Alias</string>
+    <string name="unsaved_changes_dialog_msg">Do you want to discard the changes?</string>
+    <string name="discard">Discard</string>
+    <string name="keep_editing">Keep editing</string>
+    <string name="edit_save">Save</string>
     <string-array name="AAArray">
         <item>Kaysun</item>
         <item>ProKlima</item>

@@ -35,6 +35,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mooo.ewolvy.realremote.aalist.AAListActivity"/>
         </activity>
+        <activity android:name=".aalist.AAEditItemActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mooo.ewolvy.realremote.aalist.AAEditItemActivity"/>
+        </activity>
         <activity android:name="ar.com.daidalos.afiledialog.FileChooserActivity" />
     </application>
 

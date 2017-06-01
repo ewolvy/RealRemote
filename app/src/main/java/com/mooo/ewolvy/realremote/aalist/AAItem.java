@@ -9,6 +9,7 @@ public class AAItem {
     String password;
     String certificate;
     String alias;
+    int position;
 
     public String getName() {
         return name;
@@ -72,5 +73,13 @@ public class AAItem {
 
     public void setAlias(String alias) {
         this.alias = alias;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
     }
 }

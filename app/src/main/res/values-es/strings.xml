@@ -31,4 +31,8 @@
     <string name="settings_name_label">Nombre</string>
     <string name="settings_brand_label">Marca</string>
     <string name="settings_alias_label">Alias</string>
+    <string name="discard">Descartar</string>
+    <string name="keep_editing">Seguir editando</string>
+    <string name="unsaved_changes_dialog_msg">¿Quieres descartar los cambios?</string>
+    <string name="edit_save">Guardar</string>
 </resources>
