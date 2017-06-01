@@ -1,4 +1,4 @@
-package com.mooo.ewolvy.realremote.AARemotes;
+package com.mooo.ewolvy.realremote.aaremotes;
 
 public class AAProKlima extends AASuper{
     private static final String SWING_CHAIN = "SWING";

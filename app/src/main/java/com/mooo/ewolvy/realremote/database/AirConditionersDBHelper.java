@@ -1,9 +1,9 @@
-package com.mooo.ewolvy.realremote.Database;
+package com.mooo.ewolvy.realremote.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import com.mooo.ewolvy.realremote.Database.AirConditionersContract.AvailableAA;
+import com.mooo.ewolvy.realremote.database.AirConditionersContract.AvailableAA;
 
 public class AirConditionersDBHelper extends SQLiteOpenHelper{
 

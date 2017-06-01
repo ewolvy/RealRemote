@@ -1,4 +1,4 @@
-package com.mooo.ewolvy.realremote.AARemotes;
+package com.mooo.ewolvy.realremote.aaremotes;
 
 
 public class AAKaysun extends AASuper {

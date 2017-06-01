@@ -8,7 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
-import com.mooo.ewolvy.realremote.AARemotes.*;
+import com.mooo.ewolvy.realremote.aaremotes.*;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;

@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent settingsIntent = new Intent(this,
-                    com.mooo.ewolvy.realremote.SettingsActivity.class);
+                    com.mooo.ewolvy.realremote.aalist.AAListActivity.class);
             startActivity(settingsIntent);
             return true;
         }

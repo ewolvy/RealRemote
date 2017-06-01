@@ -1,11 +1,11 @@
-package com.mooo.ewolvy.realremote.AAList;
+package com.mooo.ewolvy.realremote.aalist;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import com.mooo.ewolvy.realremote.Database.AirConditionersContract.AvailableAA;
-import com.mooo.ewolvy.realremote.Database.AirConditionersDBHelper;
+import com.mooo.ewolvy.realremote.database.AirConditionersContract.AvailableAA;
+import com.mooo.ewolvy.realremote.database.AirConditionersDBHelper;
 import java.util.ArrayList;
 import java.util.List;
 

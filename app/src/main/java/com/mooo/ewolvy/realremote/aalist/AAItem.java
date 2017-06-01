@@ -1,4 +1,4 @@
-package com.mooo.ewolvy.realremote.AAList;
+package com.mooo.ewolvy.realremote.aalist;
 
 public class AAItem {
     String name;

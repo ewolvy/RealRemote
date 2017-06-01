@@ -8,13 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mooo.ewolvy.realremote.AARemotes.AAKaysun;
-import com.mooo.ewolvy.realremote.AARemotes.AAProKlima;
-import com.mooo.ewolvy.realremote.AARemotes.AASuper;
+import com.mooo.ewolvy.realremote.aaremotes.AAKaysun;
+import com.mooo.ewolvy.realremote.aaremotes.AAProKlima;
+import com.mooo.ewolvy.realremote.aaremotes.AASuper;
 
 import java.util.Objects;
 

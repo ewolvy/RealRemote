@@ -1,4 +1,4 @@
-package com.mooo.ewolvy.realremote.Database;
+package com.mooo.ewolvy.realremote.database;
 
 import android.provider.BaseColumns;
 
