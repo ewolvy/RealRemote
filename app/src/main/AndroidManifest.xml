@@ -23,19 +23,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".SettingsActivity"
+        <activity android:name=".aalist.AAListActivity"
             android:label="@string/settings_title">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mooo.ewolvy.realremote.SettingsActivity"/>
-        </activity>
-        <activity android:name=".aalist.AAListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mooo.ewolvy.realremote.aalist.AAListActivity"/>
         </activity>
-        <activity android:name=".aalist.AAEditItemActivity">
+        <activity android:name=".aalist.AAEditItemActivity"
+            android:label="@string/settings_addAA">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mooo.ewolvy.realremote.aalist.AAEditItemActivity"/>

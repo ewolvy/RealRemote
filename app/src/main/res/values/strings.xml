@@ -46,6 +46,7 @@
     <string name="keep_editing">Keep editing</string>
     <string name="edit_save">Save</string>
     <string name="settings_certificate_button">Choose file...</string>
+    <string name="settings_addAA">Add new Air Conditioner</string>
     <string-array name="AAArray">
         <item>Kaysun</item>
         <item>ProKlima</item>
