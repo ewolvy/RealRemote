@@ -1,23 +1,28 @@
 package com.mooo.ewolvy.realremote.aalist;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NavUtils;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mooo.ewolvy.realremote.R;
@@ -28,17 +33,21 @@ import java.util.Objects;
 
 import ar.com.daidalos.afiledialog.FileChooserDialog;
 
-public class AAEditItemActivity extends AppCompatActivity {
+public class AAEditItemActivity extends AppCompatActivity implements View.OnClickListener {
 
     static final int PERMISSION_SHOW_FILE_DIALOG = 1;
     private static final String BUNDLE_EXTRAS = "BUNDLE_EXTRAS";
     private static final String POSITION = "POSITION";
+
+    private String mCertificateFile;
     private boolean mAAHasChanged = false;
     private boolean mNewAA;
     private int mModifiedItem;
 
-    EditText nameEdit, serverEdit, portEdit, usernameEdit, passwordEdit, certificateEdit, aliasEdit;
+    EditText nameEdit, serverEdit, portEdit, usernameEdit, passwordEdit, aliasEdit;
     Spinner brandSpinner;
+    Button certificateButton;
+    TextView certificateText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,18 +62,19 @@ public class AAEditItemActivity extends AppCompatActivity {
         portEdit = (EditText) findViewById(R.id.edit_port);
         usernameEdit = (EditText) findViewById(R.id.edit_username);
         passwordEdit = (EditText) findViewById(R.id.edit_password);
-        certificateEdit = (EditText) findViewById(R.id.edit_certificate);
+        certificateButton = (Button) findViewById(R.id.edit_certificate_button);
+        certificateText = (TextView) findViewById(R.id.edit_certificate_text);
         aliasEdit = (EditText) findViewById(R.id.edit_alias);
 
         if (!Objects.equals(extras.getString(AvailableAA.COLUMN_NAME_NAME), "")) {
             nameEdit.setText(extras.getString(AvailableAA.COLUMN_NAME_NAME));
             brandSpinner.setSelection(extras.getInt(AvailableAA.COLUMN_NAME_BRAND));
             serverEdit.setText(extras.getString(AvailableAA.COLUMN_NAME_SERVER));
-            portEdit.setText(extras.getInt(AvailableAA.COLUMN_NAME_PORT));
+            portEdit.setText(String.valueOf(extras.getInt(AvailableAA.COLUMN_NAME_PORT)));
             usernameEdit.setText(extras.getString(AvailableAA.COLUMN_NAME_USERNAME));
             passwordEdit.setText(extras.getString(AvailableAA.COLUMN_NAME_PASSWORD));
-            certificateEdit.setText(extras.getString(AvailableAA.COLUMN_NAME_CERTIFICATE));
-
+            mCertificateFile = extras.getString(AvailableAA.COLUMN_NAME_CERTIFICATE);
+            certificateText.setText(mCertificateFile);
             aliasEdit.setText(extras.getString(AvailableAA.COLUMN_NAME_ALIAS));
 
             mModifiedItem = extras.getInt(POSITION);
@@ -79,8 +89,9 @@ public class AAEditItemActivity extends AppCompatActivity {
         portEdit.setOnTouchListener(mTouchListener);
         usernameEdit.setOnTouchListener(mTouchListener);
         passwordEdit.setOnTouchListener(mTouchListener);
-        certificateEdit.setOnTouchListener(mTouchListener);
         aliasEdit.setOnTouchListener(mTouchListener);
+
+        certificateButton.setOnClickListener(this);
     }
 
     @Override
@@ -95,16 +106,16 @@ public class AAEditItemActivity extends AppCompatActivity {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     showFileDialog(this);
                 } else {
-                    Toast toast = Toast.makeText(this, R.string.no_file_permission, Toast.LENGTH_LONG);
-                    toast.show();
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
+                    Toast toast = Toast.makeText(this, R.string.no_file_permission, Toast.LENGTH_LONG);
+                    toast.show();
                 }
                 return;
             }
             // other 'case' lines to check for other
             // permissions this app might request
-            default:{
+            default: {
             }
         }
     }
@@ -121,7 +132,6 @@ public class AAEditItemActivity extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.edit_save:
-                saveAA();
                 finish();
                 return true;
             case android.R.id.home:
@@ -154,18 +164,31 @@ public class AAEditItemActivity extends AppCompatActivity {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
             mAAHasChanged = true;
-            if (view.getId() == R.id.edit_certificate){
-                showFileDialog(view.getContext());
-                return true;
-            } else {
-                return false;
-            }
+            return false;
         }
     };
 
     @Override
-    public void onBackPressed(){
-        if (!mAAHasChanged){
+    public void onClick(View view) {
+        if (view.getId() == R.id.edit_certificate_button) {
+            // Check if have permission to read files.
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE) !=
+                    PackageManager.PERMISSION_GRANTED) {
+                // We don't have permission. Ask for it.
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        PERMISSION_SHOW_FILE_DIALOG);
+            } else {
+                // We have permission. Show dialog to choose file.
+                showFileDialog(this);
+            }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!mAAHasChanged) {
             super.onBackPressed();
             return;
         }
@@ -181,7 +204,7 @@ public class AAEditItemActivity extends AppCompatActivity {
     }
 
     private void showUnsavedChangesDialog(
-        DialogInterface.OnClickListener discardButtonClickListener) {
+            DialogInterface.OnClickListener discardButtonClickListener) {
         // Create an AlertDialog.Builder and set the message, and click listeners
         // for the positive and negative buttons on the dialog.
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -202,36 +225,37 @@ public class AAEditItemActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    private void saveAA(){
-        AAItem newItem = new AAItem();
-
-        newItem.setName(nameEdit.getText().toString());
-        newItem.setBrand(brandSpinner.getSelectedItemPosition());
-        newItem.setServer(serverEdit.getText().toString());
-        newItem.setPort(Integer.parseInt(portEdit.getText().toString()));
-        newItem.setUsername(usernameEdit.getText().toString());
-        newItem.setPassword(passwordEdit.getText().toString());
-        newItem.setCertificate(certificateEdit.getText().toString());
-        newItem.setAlias(aliasEdit.getText().toString());
-
-        if (mNewAA){
-            newItem.setPosition(AAListActivity.listData.size() + 1);
-            AAListActivity.listData.add(newItem);
-        } else {
-            AAItem oldItem = (AAItem) AAListActivity.listData.get(mModifiedItem);
-            newItem.setPosition(oldItem.getPosition());
-            AAListActivity.listData.set(mModifiedItem, newItem);
-        }
+    @Override
+    public void finish() {
+        Bundle data = new Bundle();
+        Intent intent = new Intent();
+        data.putString (AvailableAA.COLUMN_NAME_NAME, nameEdit.getText().toString());
+        data.putInt (AvailableAA.COLUMN_NAME_BRAND, brandSpinner.getSelectedItemPosition());
+        data.putString (AvailableAA.COLUMN_NAME_SERVER, serverEdit.getText().toString());
+        data.putInt (AvailableAA.COLUMN_NAME_PORT, Integer.parseInt(portEdit.getText().toString()));
+        data.putString (AvailableAA.COLUMN_NAME_USERNAME, usernameEdit.getText().toString());
+        data.putString (AvailableAA.COLUMN_NAME_PASSWORD, passwordEdit.getText().toString());
+        data.putString (AvailableAA.COLUMN_NAME_CERTIFICATE, mCertificateFile);
+        data.putString (AvailableAA.COLUMN_NAME_ALIAS, aliasEdit.getText().toString());
+        data.putInt (POSITION, mModifiedItem);
+        // Activity finished ok, return the data
+        intent.putExtra(BUNDLE_EXTRAS, data);
+        setResult(RESULT_OK, intent);
+        super.finish();
     }
 
-    public void showFileDialog (final Context context){
+    public void showFileDialog(final Context context) {
         String fullPath, path;
         FileChooserDialog dialog = new FileChooserDialog(context);
-        fullPath = certificateEdit.getText().toString();
-        if (fullPath.equals(Environment.getExternalStorageState())){
+        if (mCertificateFile == null) {
+            fullPath = "";
+        } else {
+            fullPath = mCertificateFile;
+        }
+        if (fullPath.equals(Environment.getExternalStorageState())) {
             path = fullPath;
-        }else{
-            File file = new File (fullPath);
+        } else {
+            File file = new File(fullPath);
             path = file.getParent();
         }
         dialog.loadFolder(path);
@@ -243,7 +267,9 @@ public class AAEditItemActivity extends AppCompatActivity {
                         source.getContext().getString(R.string.settings_selected_file) + file.getAbsoluteFile(),
                         Toast.LENGTH_LONG);
                 toast.show();
-                certificateEdit.setText(file.getAbsolutePath());
+                mCertificateFile = file.getAbsolutePath();
+                certificateText.setText(mCertificateFile);
+                mAAHasChanged = true;
             }
 
             public void onFileSelected(Dialog source, File folder, String name) {

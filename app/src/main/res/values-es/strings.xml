@@ -35,4 +35,5 @@
     <string name="keep_editing">Seguir editando</string>
     <string name="unsaved_changes_dialog_msg">¿Quieres descartar los cambios?</string>
     <string name="edit_save">Guardar</string>
+    <string name="settings_certificate_button">Elegir archivo...</string>
 </resources>

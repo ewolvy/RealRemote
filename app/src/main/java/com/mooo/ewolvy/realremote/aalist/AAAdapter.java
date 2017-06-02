@@ -19,7 +19,7 @@ public class AAAdapter extends RecyclerView.Adapter<AAAdapter.AAHolder>{
     private ItemClickCallback itemClickCallback;
 
     public interface ItemClickCallback{
-        void onItemClick(int p);
+        void onItemClick(View v, int p);
     }
 
     public void setItemClickCallback(final ItemClickCallback itemClickCallback){
@@ -65,12 +65,12 @@ public class AAAdapter extends RecyclerView.Adapter<AAAdapter.AAHolder>{
             name = (TextView) itemView.findViewById(R.id.aa_list_name);
             server = (TextView) itemView.findViewById(R.id.aa_list_link);
             container = itemView.findViewById(R.id.container);
-            container.setOnClickListener(this);
+            if (container != null) container.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            itemClickCallback.onItemClick(getAdapterPosition());
+            itemClickCallback.onItemClick(view, getAdapterPosition());
         }
     }
 }

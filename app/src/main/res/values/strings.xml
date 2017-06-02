@@ -45,6 +45,7 @@
     <string name="discard">Discard</string>
     <string name="keep_editing">Keep editing</string>
     <string name="edit_save">Save</string>
+    <string name="settings_certificate_button">Choose file...</string>
     <string-array name="AAArray">
         <item>Kaysun</item>
         <item>ProKlima</item>
