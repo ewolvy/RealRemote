@@ -15,6 +15,7 @@ public class AAAdapter extends RecyclerView.Adapter<AAAdapter.AAHolder>{
 
     private List<AAItem> listData;
     private LayoutInflater inflater;
+    private Context context;
 
     private ItemClickCallback itemClickCallback;
 
@@ -29,6 +30,7 @@ public class AAAdapter extends RecyclerView.Adapter<AAAdapter.AAHolder>{
     public AAAdapter (List<AAItem> listData, Context c){
         this.inflater = LayoutInflater.from(c);
         this.listData = listData;
+        this.context = c;
     }
 
     @Override
@@ -45,8 +47,13 @@ public class AAAdapter extends RecyclerView.Adapter<AAAdapter.AAHolder>{
     }
 
     public void setListData(ArrayList<AAItem> exerciseList){
-        this.listData.clear();
-        this.listData.addAll(exerciseList);
+        if (listData != null) {
+            listData.clear();
+            listData.addAll(exerciseList);
+        } else {
+            listData = exerciseList;
+        }
+        notifyDataSetChanged();
     }
 
     @Override
@@ -65,7 +72,7 @@ public class AAAdapter extends RecyclerView.Adapter<AAAdapter.AAHolder>{
             name = (TextView) itemView.findViewById(R.id.aa_list_name);
             server = (TextView) itemView.findViewById(R.id.aa_list_link);
             container = itemView.findViewById(R.id.container);
-            if (container != null) container.setOnClickListener(this);
+            container.setOnClickListener(this);
         }
 
         @Override

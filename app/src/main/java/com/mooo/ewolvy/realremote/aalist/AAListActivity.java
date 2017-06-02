@@ -135,7 +135,10 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
             newItem.setPosition(listData.size() + 1);
             listData.add(newItem);
         }
-        if (resultCode == RESULT_OK) AAData.saveListData(listData, this);
+        if (resultCode == RESULT_OK) {
+            AAData.saveListData(listData, this);
+            adapter.setListData(listData);
+        }
     }
 
     private ItemTouchHelper.Callback createHelperCallback(){
@@ -169,7 +172,7 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
 
     private void deleteItem (final int pos){
         listData.remove(pos);
-        adapter.notifyItemRemoved(pos);
+        adapter.setListData(listData);
     }
 
     @Override
