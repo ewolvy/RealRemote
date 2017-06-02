@@ -66,6 +66,9 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
         adapter = new AAAdapter(AAData.getListData(this), this);
         recView.setAdapter(adapter);
         adapter.setItemClickCallback(this);
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(createHelperCallback());
+        itemTouchHelper.attachToRecyclerView(recView);
     }
 
     @Override
@@ -169,5 +172,9 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
         adapter.notifyItemRemoved(pos);
     }
 
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        AAData.saveListData(listData, this);
+    }
 }
