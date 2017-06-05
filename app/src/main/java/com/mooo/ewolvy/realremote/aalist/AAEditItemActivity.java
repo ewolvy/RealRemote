@@ -39,9 +39,9 @@ public class AAEditItemActivity extends AppCompatActivity implements View.OnClic
     private static final String BUNDLE_EXTRAS = "BUNDLE_EXTRAS";
     private static final String POSITION = "POSITION";
 
-    private String mCertificateFile;
+    private String mCertificateFile = "";
     private boolean mAAHasChanged = false;
-    private boolean mAbort = false;
+    private boolean mSavePressed = false;
     private int mModifiedItem;
 
     EditText nameEdit, serverEdit, portEdit, usernameEdit, passwordEdit, aliasEdit;
@@ -129,6 +129,7 @@ public class AAEditItemActivity extends AppCompatActivity implements View.OnClic
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.edit_save:
+                mSavePressed = true;
                 finish();
                 return true;
             case android.R.id.home:
@@ -194,7 +195,6 @@ public class AAEditItemActivity extends AppCompatActivity implements View.OnClic
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         // User clicked "Discard" button, close the current activity.
-                        mAbort = true;
                         finish();
                     }
                 };
@@ -225,25 +225,52 @@ public class AAEditItemActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void finish() {
-        if (!mAbort) {
-            Bundle data = new Bundle();
-            Intent intent = new Intent();
-            data.putString(AvailableAA.COLUMN_NAME_NAME, nameEdit.getText().toString());
-            data.putInt(AvailableAA.COLUMN_NAME_BRAND, brandSpinner.getSelectedItemPosition());
-            data.putString(AvailableAA.COLUMN_NAME_SERVER, serverEdit.getText().toString());
-            data.putInt(AvailableAA.COLUMN_NAME_PORT, Integer.parseInt(portEdit.getText().toString()));
-            data.putString(AvailableAA.COLUMN_NAME_USERNAME, usernameEdit.getText().toString());
-            data.putString(AvailableAA.COLUMN_NAME_PASSWORD, passwordEdit.getText().toString());
-            data.putString(AvailableAA.COLUMN_NAME_CERTIFICATE, mCertificateFile);
-            data.putString(AvailableAA.COLUMN_NAME_ALIAS, aliasEdit.getText().toString());
-            data.putInt(POSITION, mModifiedItem);
-            // Activity finished ok, return the data
-            intent.putExtra(BUNDLE_EXTRAS, data);
-            setResult(RESULT_OK, intent);
+        if (mSavePressed) {
+            if (checkData()) {
+                Bundle data = new Bundle();
+                Intent intent = new Intent();
+                data.putString(AvailableAA.COLUMN_NAME_NAME, nameEdit.getText().toString());
+                data.putInt(AvailableAA.COLUMN_NAME_BRAND, brandSpinner.getSelectedItemPosition());
+                data.putString(AvailableAA.COLUMN_NAME_SERVER, serverEdit.getText().toString());
+                data.putInt(AvailableAA.COLUMN_NAME_PORT, Integer.parseInt(portEdit.getText().toString()));
+                data.putString(AvailableAA.COLUMN_NAME_USERNAME, usernameEdit.getText().toString());
+                data.putString(AvailableAA.COLUMN_NAME_PASSWORD, passwordEdit.getText().toString());
+                data.putString(AvailableAA.COLUMN_NAME_CERTIFICATE, mCertificateFile);
+                data.putString(AvailableAA.COLUMN_NAME_ALIAS, aliasEdit.getText().toString());
+                data.putInt(POSITION, mModifiedItem);
+                // Activity finished ok, return the data
+                intent.putExtra(BUNDLE_EXTRAS, data);
+                setResult(RESULT_OK, intent);
+            } else {
+                // Missing data, show message and continue editing
+                new AlertDialog.Builder(AAEditItemActivity.this)
+                        .setTitle(getString(R.string.edit_incomplete_title))
+                        .setMessage(getString(R.string.edit_incomplete_message))
+                        .setCancelable(false)
+                        .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Whatever...
+                            }
+                        }).show();
+                mSavePressed = false;
+                return;
+            }
         } else {
             setResult(RESULT_CANCELED);
         }
         super.finish();
+    }
+
+    private boolean checkData (){
+        if (nameEdit.getText().toString().equals("")) return false;
+        if (serverEdit.getText().toString().equals("")) return false;
+        if (portEdit.getText().toString().equals("")) return false;
+        if (usernameEdit.getText().toString().equals("")) return false;
+        if (passwordEdit.getText().toString().equals("")) return false;
+        if (mCertificateFile.equals("")) return false;
+        if (aliasEdit.getText().toString().equals("")) return false;
+        return true;
     }
 
     public void showFileDialog(final Context context) {

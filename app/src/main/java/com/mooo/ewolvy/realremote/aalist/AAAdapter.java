@@ -15,7 +15,6 @@ public class AAAdapter extends RecyclerView.Adapter<AAAdapter.AAHolder>{
 
     private List<AAItem> listData;
     private LayoutInflater inflater;
-    private Context context;
 
     private ItemClickCallback itemClickCallback;
 
@@ -30,7 +29,6 @@ public class AAAdapter extends RecyclerView.Adapter<AAAdapter.AAHolder>{
     public AAAdapter (List<AAItem> listData, Context c){
         this.inflater = LayoutInflater.from(c);
         this.listData = listData;
-        this.context = c;
     }
 
     @Override

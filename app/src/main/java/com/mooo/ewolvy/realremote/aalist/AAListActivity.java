@@ -1,5 +1,7 @@
 package com.mooo.ewolvy.realremote.aalist;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -171,9 +173,41 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
     }
 
     private void deleteItem (final int pos){
-        listData.remove(pos);
-        adapter.setListData(listData);
+        DialogInterface.OnClickListener deleteButtonClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // User clicked "Yes" button, remove the item.
+                        listData.remove(pos);
+                        adapter.setListData(listData);
+                    }
+                };
+        // Show dialog to confirm deletion
+        ShowConfirmDeleteDialog(deleteButtonClickListener);
     }
+
+    private void ShowConfirmDeleteDialog(
+            DialogInterface.OnClickListener deleteButtonClickListener) {
+        // Create an AlertDialog.Builder and set the message, and click listeners
+        // for the positive and negative buttons on the dialog.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.confirm_delete_dialog_msg);
+        builder.setPositiveButton(R.string.yes, deleteButtonClickListener);
+        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "No" button, so dismiss the dialog.
+                if (dialog != null) {
+                    adapter.setListData(listData);
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
 
     @Override
     protected void onPause() {

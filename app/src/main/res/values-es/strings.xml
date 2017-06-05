@@ -37,4 +37,10 @@
     <string name="edit_save">Guardar</string>
     <string name="settings_certificate_button">Elegir archivo...</string>
     <string name="settings_addAA">Añadir aire acondicionado</string>
+    <string name="confirm_delete_dialog_msg">¿Seguro que desea eliminar este aire acondicionado?</string>
+    <string name="no">No</string>
+    <string name="yes">Sí</string>
+    <string name="edit_incomplete_message">Todos los campos deben rellenarse para crear/editar un AA. Por favor revísalos y vuelve a intentarlo.</string>
+    <string name="edit_incomplete_title">Error creando AA</string>
+    <string name="ok">De acuerdo</string>
 </resources>
