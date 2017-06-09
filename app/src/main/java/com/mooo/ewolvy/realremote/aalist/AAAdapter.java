@@ -41,7 +41,12 @@ public class AAAdapter extends RecyclerView.Adapter<AAAdapter.AAHolder>{
     public void onBindViewHolder(AAHolder holder, int position) {
         AAItem item = listData.get(position);
         holder.name.setText(item.getName());
-        holder.server.setText(item.getServer());
+        String serverText = item.getServer();
+        serverText = serverText.concat(":");
+        serverText = serverText.concat(String.valueOf(item.getPort()));
+        serverText = serverText.concat("/");
+        serverText = serverText.concat(item.getAlias());
+        holder.server.setText(serverText);
     }
 
     public void setListData(ArrayList<AAItem> exerciseList){

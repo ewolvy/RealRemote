@@ -43,4 +43,5 @@
     <string name="edit_incomplete_message">Todos los campos deben rellenarse para crear/editar un AA. Por favor revísalos y vuelve a intentarlo.</string>
     <string name="edit_incomplete_title">Error creando AA</string>
     <string name="ok">De acuerdo</string>
+    <string name="main_empty_database">No hay ningún Aire Acondicionado configurado. Por favor, vaya a opciones y configure sus aparatos.</string>
 </resources>

@@ -10,13 +10,26 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import com.mooo.ewolvy.realremote.aalist.AAData;
+import com.mooo.ewolvy.realremote.aalist.AAItem;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+
+    public static ArrayList listData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        listData = (ArrayList) AAData.getListData(this);
+        if (listData.size() != 0){
+            ((TextView) findViewById(R.id.empty_aa_text)).setVisibility(TextView.INVISIBLE);
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -82,26 +95,18 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a ControlsFragment.
-            return ControlsFragment.newInstance(position + 1);
+            return ControlsFragment.newInstance(position);
         }
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            return listData.size();
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return "SECTION 1";
-                case 1:
-                    return "SECTION 2";
-                case 2:
-                    return "SECTION 3";
-            }
-            return null;
+            AAItem item = (AAItem) listData.get(position);
+            return item.getName();
         }
     }
 }

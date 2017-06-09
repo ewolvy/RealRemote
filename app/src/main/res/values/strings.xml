@@ -53,6 +53,7 @@
     <string name="edit_incomplete_title">Error creating AC</string>
     <string name="edit_incomplete_message">All fields must be fullfilled to add/modify an AC. Please review your settings and try again.</string>
     <string name="ok">Ok</string>
+    <string name="main_empty_database">There are no Air Conditioners set. Please go to settings and set your devices.</string>
     <string-array name="AAArray">
         <item>Kaysun</item>
         <item>ProKlima</item>

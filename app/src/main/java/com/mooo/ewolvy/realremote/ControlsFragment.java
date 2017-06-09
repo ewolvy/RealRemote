@@ -11,17 +11,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mooo.ewolvy.realremote.aalist.AAData;
+import com.mooo.ewolvy.realremote.aalist.AAItem;
 import com.mooo.ewolvy.realremote.aaremotes.AAKaysun;
 import com.mooo.ewolvy.realremote.aaremotes.AAProKlima;
 import com.mooo.ewolvy.realremote.aaremotes.AASuper;
+import com.mooo.ewolvy.realremote.database.AirConditionersContract;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class ControlsFragment extends Fragment {
     AASuper state;
     SSLServer myServer;
     View fragView;
-
+    AAItem item;
 
     public ControlsFragment(){}
 
@@ -95,7 +99,12 @@ public class ControlsFragment extends Fragment {
             }
         });
 
-//        fragView.setLayoutParams(((MainActivity) getActivity()).fetchLayoutParams());
+        // Get the item representation
+        Bundle args = this.getArguments();
+        if (args != null) {
+            int position = args.getInt(ARG_SECTION_NUMBER);
+            item = AAData.getListData(getContext()).get(position);
+        }
 
         return fragView;
     }
@@ -124,10 +133,8 @@ public class ControlsFragment extends Fragment {
         boolean isOn = sharedPrefs.getBoolean("on", false);
 
         // Create AA object to manage the AA with the preferences (if there was no preference, it will go to default)
-        int position = 0;
-
-        switch (position){
-            case 0:
+        switch (item.getBrand()){
+            case AirConditionersContract.AA_KAYSUN:
                 state = new AAKaysun(mode,
                         fan,
                         temperature,
@@ -135,7 +142,7 @@ public class ControlsFragment extends Fragment {
                         "AAKaysun",
                         "");
                 break;
-            case 1:
+            case AirConditionersContract.AA_PROKLIMA:
                 state = new AAProKlima(mode,
                         fan,
                         temperature,
@@ -144,6 +151,7 @@ public class ControlsFragment extends Fragment {
                         "");
                 break;
         }
+
         updateView();
     }
 
@@ -280,27 +288,11 @@ public class ControlsFragment extends Fragment {
     }
 
     private void sslServerSetup(){
-        // Read the preferences or set default parameters
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String address = sharedPrefs.getString(getString(R.string.settings_address_key), "");
-        String port_str = sharedPrefs.getString(getString(R.string.settings_port_key), "0");
-        String username = sharedPrefs.getString(getString(R.string.settings_username_key), "");
-        String password = sharedPrefs.getString(getString(R.string.settings_password_key), "");
-        int port;
-        try {
-            port = Integer.parseInt(port_str);
-        } catch(NumberFormatException nfe) {
-            port = 0;
-        }
-
-        // If preferences are not set ask the user to set them, else create the SSLServer object to manage it
-        if (Objects.equals(address, "") || port == 0 || Objects.equals(username, "") || Objects.equals(password, "")) {
-            myServer = null;
-            Toast toast = Toast.makeText(getActivity().getApplicationContext(), getString(R.string.server_data_missing), Toast.LENGTH_LONG);
-            toast.show();
-        }else {
-            myServer = new SSLServer(address, port, username, password, "");
-        }
+        myServer = new SSLServer(item.getServer(),
+                item.getPort(),
+                item.getUsername(),
+                item.getPassword(),
+                item.getCertificate());
     }
 
     public void tempMinusClick() {
@@ -380,7 +372,7 @@ public class ControlsFragment extends Fragment {
                 break;
         }
 
-        // Set on/off sign visible if its on, invisible if not
+        // Set on/off sign visible if it's on, invisible if not
         if (state.getIsOn()) {
             fragView.findViewById(R.id.onOffSign).setVisibility(View.VISIBLE);
         }else{
