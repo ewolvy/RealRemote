@@ -7,7 +7,7 @@ public abstract class AASuper {
     public static final int DRY_MODE = 2;
     public static final int HEAT_MODE = 3;
     public static final int FAN_MODE = 4;
-    public static final int NONEXSISTING_MODE = 99;
+    public static final int NONEXISTENT_MODE = 99;
 
     // Fan constants
     public static final int AUTO_FAN = 0;
@@ -19,7 +19,7 @@ public abstract class AASuper {
     // Temperature constants and variables (for inheritance on specific devices)
     public int TEMP_MIN;
     public int TEMP_MAX;
-    public static final int NONEXISTING_TEMP = 99;
+    public static final int NONEXISTENT_TEMP = 99;
 
     // Array of available modes to be defined on child classes
     boolean AVAILABLE_MODES[] = new boolean[5];
@@ -35,8 +35,7 @@ public abstract class AASuper {
     private int currentTemp;
 
     // Constructor
-    AASuper (){
-    }
+    AASuper (){} // Empty constructor to prevent instantiating the class
 
     // Getters methods for variables //
     public String getServerPath(){
@@ -136,7 +135,7 @@ public abstract class AASuper {
                 }
                 break;
             default:
-                nextMode = NONEXSISTING_MODE;
+                nextMode = NONEXISTENT_MODE;
         }
         return nextMode;
     }

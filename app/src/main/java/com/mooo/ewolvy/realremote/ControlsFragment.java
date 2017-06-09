@@ -13,13 +13,8 @@ import android.widget.Toast;
 
 import com.mooo.ewolvy.realremote.aalist.AAData;
 import com.mooo.ewolvy.realremote.aalist.AAItem;
-import com.mooo.ewolvy.realremote.aaremotes.AAKaysun;
-import com.mooo.ewolvy.realremote.aaremotes.AAProKlima;
-import com.mooo.ewolvy.realremote.aaremotes.AASuper;
+import com.mooo.ewolvy.realremote.aaremotes.*;
 import com.mooo.ewolvy.realremote.database.AirConditionersContract;
-
-import java.util.ArrayList;
-import java.util.Objects;
 
 public class ControlsFragment extends Fragment {
     AASuper state;
@@ -160,7 +155,7 @@ public class ControlsFragment extends Fragment {
         int actualMode = state.getMode();
         int nextMode = state.getNextMode(actualMode);
 
-        if (nextMode != AASuper.NONEXSISTING_MODE) {
+        if (nextMode != AASuper.NONEXISTENT_MODE) {
             switch (actualMode) {
                 case AASuper.AUTO_MODE:
                     modeView = fragView.findViewById(R.id.autoMode);
