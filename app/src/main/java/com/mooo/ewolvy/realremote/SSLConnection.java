@@ -22,7 +22,7 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 
-final class SSLConnection {
+class SSLConnection {
     // Constants
     static private final String LOG_TAG = "SSLConnection";
 
@@ -108,7 +108,7 @@ final class SSLConnection {
         return output.toString();
     }
 
-    public static String execute (String urlAddress, String username, String password, String certificate){
+    public static String connect (String urlAddress, String username, String password, String certificate){
         HttpsURLConnection urlConnection = setUpHttpsConnection(urlAddress, certificate);
         String jsonResponse ="";
 

@@ -1,15 +1,51 @@
 package com.mooo.ewolvy.realremote.aalist;
 
 public class AAItem {
-    String name;
-    int brand;
-    String server;
-    int port;
-    String username;
-    String password;
-    String certificate;
-    String alias;
-    int position;
+    private String name;
+    private int brand;
+    private String server;
+    private int port;
+    private String username;
+    private String password;
+    private String certificate;
+    private String alias;
+    private int position;
+    private int temperature;
+    private int mode;
+    private int fan;
+    private boolean is_on;
+
+    public int getTemperature() {
+        return temperature;
+    }
+
+    public void setTemperature(int temperature) {
+        this.temperature = temperature;
+    }
+
+    public int getMode() {
+        return mode;
+    }
+
+    public void setMode(int mode) {
+        this.mode = mode;
+    }
+
+    public int getFan() {
+        return fan;
+    }
+
+    public void setFan(int fan) {
+        this.fan = fan;
+    }
+
+    public boolean getIs_on() {
+        return is_on;
+    }
+
+    public void setIs_on(boolean is_on) {
+        this.is_on = is_on;
+    }
 
     public String getName() {
         return name;

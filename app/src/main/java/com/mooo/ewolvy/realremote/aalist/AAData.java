@@ -26,6 +26,10 @@ public class AAData {
             item.setPassword(dbData.getString(dbData.getColumnIndex(AvailableAA.COLUMN_NAME_PASSWORD)));
             item.setCertificate(dbData.getString(dbData.getColumnIndex(AvailableAA.COLUMN_NAME_CERTIFICATE)));
             item.setAlias(dbData.getString(dbData.getColumnIndex(AvailableAA.COLUMN_NAME_ALIAS)));
+            item.setTemperature(dbData.getInt(dbData.getColumnIndex(AvailableAA.COLUMN_NAME_TEMP)));
+            item.setMode(dbData.getInt(dbData.getColumnIndex(AvailableAA.COLUMN_NAME_MODE)));
+            item.setFan(dbData.getInt(dbData.getColumnIndex(AvailableAA.COLUMN_NAME_FAN)));
+            item.setIs_on(dbData.getInt(dbData.getColumnIndex(AvailableAA.COLUMN_NAME_IS_ON)) == 1);
             data.add(item);
         }
 
@@ -49,6 +53,10 @@ public class AAData {
             values.put(AvailableAA.COLUMN_NAME_PASSWORD, data.get(i).getPassword());
             values.put(AvailableAA.COLUMN_NAME_CERTIFICATE, data.get(i).getCertificate());
             values.put(AvailableAA.COLUMN_NAME_ALIAS, data.get(i).getAlias());
+            values.put(AvailableAA.COLUMN_NAME_TEMP, data.get(i).getTemperature());
+            values.put(AvailableAA.COLUMN_NAME_MODE, data.get(i).getMode());
+            values.put(AvailableAA.COLUMN_NAME_FAN, data.get(i).getFan());
+            values.put(AvailableAA.COLUMN_NAME_IS_ON, (data.get(i).getIs_on()) ? 1 : 0);
 
             db.insert(AvailableAA.TABLE_NAME, null, values);
         }
@@ -64,7 +72,11 @@ public class AAData {
                 AvailableAA.COLUMN_NAME_USERNAME,
                 AvailableAA.COLUMN_NAME_PASSWORD,
                 AvailableAA.COLUMN_NAME_CERTIFICATE,
-                AvailableAA.COLUMN_NAME_ALIAS
+                AvailableAA.COLUMN_NAME_ALIAS,
+                AvailableAA.COLUMN_NAME_TEMP,
+                AvailableAA.COLUMN_NAME_MODE,
+                AvailableAA.COLUMN_NAME_FAN,
+                AvailableAA.COLUMN_NAME_IS_ON
         };
 
         String orderBy = AvailableAA._ID;

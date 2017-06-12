@@ -1,9 +1,8 @@
 package com.mooo.ewolvy.realremote;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,42 +50,36 @@ public class ControlsFragment extends Fragment {
                 modeClick();
             }
         });
-
         fragView.findViewById(R.id.fanButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 fanClick();
             }
         });
-
         fragView.findViewById(R.id.offButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 offClick();
             }
         });
-
         fragView.findViewById(R.id.tempMinus).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 tempMinusClick();
             }
         });
-
         fragView.findViewById(R.id.tempPlus).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 tempPlusClick();
             }
         });
-
         fragView.findViewById(R.id.sendButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 sendClick();
             }
         });
-
         fragView.findViewById(R.id.swingButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,53 +94,39 @@ public class ControlsFragment extends Fragment {
             item = AAData.getListData(getContext()).get(position);
         }
 
+        // Create AA object to manage the AA
+        switch (item.getBrand()){
+            case AirConditionersContract.AA_KAYSUN:
+                state = new AAKaysun(item.getMode(),
+                        item.getFan(),
+                        item.getTemperature(),
+                        item.getIs_on(),
+                        "AAKaysun",
+                        item.getCertificate());
+                break;
+            case AirConditionersContract.AA_PROKLIMA:
+                state = new AAProKlima(item.getMode(),
+                        item.getFan(),
+                        item.getTemperature(),
+                        item.getIs_on(),
+                        "AAProKlima",
+                        item.getCertificate());
+                break;
+        }
+
         return fragView;
     }
 
     @Override
     public void onPause() {
+        Log.v("CONTROLS_FRAGMENT", "Fragment paused: " + item.getPosition());
         super.onPause();
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        SharedPreferences.Editor editor = sharedPrefs.edit();
-        editor.putInt("mode", state.getMode());
-        editor.putInt("fan", state.getFan());
-        editor.putInt("temperature", state.getCurrentTemp());
-        editor.putBoolean("on", state.getIsOn());
-        editor.apply();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        sslServerSetup();
-
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        int mode = sharedPrefs.getInt("mode", 99);
-        int fan = sharedPrefs.getInt("fan", 99);
-        int temperature = sharedPrefs.getInt("temperature", 99);
-        boolean isOn = sharedPrefs.getBoolean("on", false);
-
-        // Create AA object to manage the AA with the preferences (if there was no preference, it will go to default)
-        switch (item.getBrand()){
-            case AirConditionersContract.AA_KAYSUN:
-                state = new AAKaysun(mode,
-                        fan,
-                        temperature,
-                        isOn,
-                        "AAKaysun",
-                        "");
-                break;
-            case AirConditionersContract.AA_PROKLIMA:
-                state = new AAProKlima(mode,
-                        fan,
-                        temperature,
-                        isOn,
-                        "AAProKlima",
-                        "");
-                break;
-        }
-
-        updateView();
+        Log.v("CONTROLS_FRAGMENT", "Fragment resumed: " + item.getPosition());
     }
 
     public void modeClick() {
@@ -225,6 +204,7 @@ public class ControlsFragment extends Fragment {
                     break;
             }
             state.setMode(nextMode);
+            item.setMode(nextMode);
         }
     }
 
@@ -241,6 +221,7 @@ public class ControlsFragment extends Fragment {
                 if (fanView != null) {
                     fanView.setVisibility(View.VISIBLE);
                     state.setFan(AASuper.LEVEL1_FAN);
+                    item.setFan(AASuper.LEVEL1_FAN);
                 }
                 break;
 
@@ -249,6 +230,7 @@ public class ControlsFragment extends Fragment {
                 if (fanView != null) {
                     fanView.setVisibility(View.VISIBLE);
                     state.setFan(AASuper.LEVEL2_FAN);
+                    item.setFan(AASuper.LEVEL2_FAN);
                 }
                 break;
 
@@ -257,6 +239,7 @@ public class ControlsFragment extends Fragment {
                 if (fanView != null) {
                     fanView.setVisibility(View.VISIBLE);
                     state.setFan(AASuper.LEVEL3_FAN);
+                    item.setFan(AASuper.LEVEL3_FAN);
                 }
                 break;
 
@@ -277,22 +260,16 @@ public class ControlsFragment extends Fragment {
                 if (fanView != null) {
                     fanView.setVisibility(View.VISIBLE);
                     state.setFan(AASuper.AUTO_FAN);
+                    item.setFan(AASuper.AUTO_FAN);
                 }
                 break;
         }
     }
 
-    private void sslServerSetup(){
-        myServer = new SSLServer(item.getServer(),
-                item.getPort(),
-                item.getUsername(),
-                item.getPassword(),
-                item.getCertificate());
-    }
-
     public void tempMinusClick() {
         if (state.getCurrentTemp() > state.TEMP_MIN && state.isActiveTemp()){
             state.setMinusTemp();
+            item.setTemperature(state.getCurrentTemp());
             TextView tempView = (TextView) fragView.findViewById(R.id.tempView);
             String temperature = Integer.toString(state.getCurrentTemp());
             if (tempView != null) tempView.setText(temperature);
@@ -302,6 +279,7 @@ public class ControlsFragment extends Fragment {
     public void tempPlusClick() {
         if (state.getCurrentTemp() < state.TEMP_MAX && state.isActiveTemp()){
             state.setPlusTemp();
+            item.setTemperature(state.getCurrentTemp());
             TextView tempView = (TextView) fragView.findViewById(R.id.tempView);
             String temperature = Integer.toString(state.getCurrentTemp());
             if (tempView != null) tempView.setText(temperature);
@@ -312,6 +290,7 @@ public class ControlsFragment extends Fragment {
         if (myServer != null){
             // Send the PowerOff code.
             myServer.sendCode (state.getPowerOff(), getActivity().getApplicationContext(), state, (ImageView) fragView.findViewById(R.id.onOffSign));
+            item.setIs_on(false);
         }else{
             Toast toast = Toast.makeText(getActivity().getApplicationContext(), getString(R.string.server_data_missing), Toast.LENGTH_LONG);
             toast.show();

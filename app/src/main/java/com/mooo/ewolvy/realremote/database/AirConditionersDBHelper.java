@@ -8,7 +8,7 @@ import com.mooo.ewolvy.realremote.database.AirConditionersContract.AvailableAA;
 public class AirConditionersDBHelper extends SQLiteOpenHelper{
 
     // Constants for database name and version. When upgrading the contract, version must be updated
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "AirConditioners.db";
 
     // String constant with SQL sentence for create table on first access
@@ -22,7 +22,11 @@ public class AirConditionersDBHelper extends SQLiteOpenHelper{
             AvailableAA.COLUMN_NAME_USERNAME + " TEXT," +
             AvailableAA.COLUMN_NAME_PASSWORD + " TEXT," +
             AvailableAA.COLUMN_NAME_CERTIFICATE + " TEXT," +
-            AvailableAA.COLUMN_NAME_ALIAS + " TEXT)";
+            AvailableAA.COLUMN_NAME_ALIAS + " TEXT," +
+            AvailableAA.COLUMN_NAME_TEMP + " INTEGER," +
+            AvailableAA.COLUMN_NAME_MODE + " INTEGER," +
+            AvailableAA.COLUMN_NAME_FAN + " INTEGER," +
+            AvailableAA.COLUMN_NAME_IS_ON + " INTEGER)";
 
 
     // Required constructor calling super
@@ -38,7 +42,16 @@ public class AirConditionersDBHelper extends SQLiteOpenHelper{
 
     // On database version update check if need to do something
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        // Do nothing as this is the first version and there is nothing to upgrade
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
+        // We added columns Temp, Mode, Fan and Is_On. We must upgrade existing databases
+
+        String ALTER_TABLE = "ALTER TABLE " + AvailableAA.TABLE_NAME + " ADD COLUMN ";
+        //Check if really needs to be update
+        if (newVersion == 2 && oldVersion == 1){
+            sqLiteDatabase.execSQL(ALTER_TABLE + AvailableAA.COLUMN_NAME_TEMP + "INTEGER DEFAULT 27");
+            sqLiteDatabase.execSQL(ALTER_TABLE + AvailableAA.COLUMN_NAME_MODE + "INTEGER DEFAULT 0");
+            sqLiteDatabase.execSQL(ALTER_TABLE + AvailableAA.COLUMN_NAME_FAN + "INTEGER DEFAULT 0");
+            sqLiteDatabase.execSQL(ALTER_TABLE + AvailableAA.COLUMN_NAME_IS_ON + "INTEGER DEFAULT 0");
+        }
     }
 }

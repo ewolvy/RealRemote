@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         listData = (ArrayList) AAData.getListData(this);
         if (listData.size() != 0){
-            ((TextView) findViewById(R.id.empty_aa_text)).setVisibility(TextView.INVISIBLE);
+            (findViewById(R.id.empty_aa_text)).setVisibility(TextView.INVISIBLE);
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

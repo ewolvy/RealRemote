@@ -17,6 +17,7 @@ import android.transition.Fade;
 import android.view.View;
 
 import com.mooo.ewolvy.realremote.R;
+import com.mooo.ewolvy.realremote.aaremotes.AASuper;
 import com.mooo.ewolvy.realremote.database.AirConditionersContract.AvailableAA;
 
 import java.util.ArrayList;
@@ -27,7 +28,6 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
     private static final String POSITION = "POSITION";
     private static final int REQUEST_CODE_MODIFY = 1;
     private static final int REQUEST_CODE_NEW = 2;
-    private RecyclerView recView;
     private AAAdapter adapter;
 
     public static ArrayList listData;
@@ -62,7 +62,7 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
 
         listData = (ArrayList) AAData.getListData(this);
 
-        recView = (RecyclerView) findViewById(R.id.rec_list);
+        RecyclerView recView = (RecyclerView) findViewById(R.id.rec_list);
         recView.setLayoutManager(new LinearLayoutManager(this));
 
         adapter = new AAAdapter(AAData.getListData(this), this);
@@ -119,7 +119,12 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
             item.setPassword(extras.getString(AvailableAA.COLUMN_NAME_PASSWORD));
             item.setCertificate(extras.getString(AvailableAA.COLUMN_NAME_CERTIFICATE));
             item.setAlias(extras.getString(AvailableAA.COLUMN_NAME_ALIAS));
-            item.setPosition(extras.getInt(POSITION));
+            int position = extras.getInt((POSITION));
+            item.setPosition(position);
+            item.setTemperature(((AAItem)listData.get(position)).getTemperature());
+            item.setMode(((AAItem)listData.get(position)).getMode());
+            item.setFan(((AAItem)listData.get(position)).getFan());
+            item.setIs_on(((AAItem)listData.get(position)).getIs_on());
 
             listData.set(extras.getInt(POSITION), item);
         } else if (requestCode == REQUEST_CODE_NEW && resultCode == RESULT_OK){
@@ -133,6 +138,10 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
             newItem.setPassword(extras.getString(AvailableAA.COLUMN_NAME_PASSWORD));
             newItem.setCertificate(extras.getString(AvailableAA.COLUMN_NAME_CERTIFICATE));
             newItem.setAlias(extras.getString(AvailableAA.COLUMN_NAME_ALIAS));
+            newItem.setTemperature(27);
+            newItem.setMode(AASuper.AUTO_MODE);
+            newItem.setFan(AASuper.AUTO_FAN);
+            newItem.setIs_on(false);
 
             newItem.setPosition(listData.size() + 1);
             listData.add(newItem);
