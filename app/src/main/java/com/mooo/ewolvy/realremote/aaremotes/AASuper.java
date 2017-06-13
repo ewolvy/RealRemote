@@ -1,6 +1,11 @@
 package com.mooo.ewolvy.realremote.aaremotes;
 
 public abstract class AASuper {
+    // Brands constants
+    public static final int AA_KAYSUN = 0;
+    public static final int AA_PROKLIMA = 1;
+
+
     // Mode constants
     public static final int AUTO_MODE = 0;
     public static final int COOL_MODE = 1;
@@ -19,6 +24,8 @@ public abstract class AASuper {
     // Temperature constants and variables (for inheritance on specific devices)
     public int TEMP_MIN;
     public int TEMP_MAX;
+    public int BRAND;
+    public int ID;
     public static final int NONEXISTENT_TEMP = 99;
 
     // Array of available modes to be defined on child classes

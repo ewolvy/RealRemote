@@ -42,7 +42,7 @@ public class AAEditItemActivity extends AppCompatActivity implements View.OnClic
     private String mCertificateFile = "";
     private boolean mAAHasChanged = false;
     private boolean mSavePressed = false;
-    private int mModifiedItem;
+    private int mItemPosition, mItemID;
 
     EditText nameEdit, serverEdit, portEdit, usernameEdit, passwordEdit, aliasEdit;
     Spinner brandSpinner;
@@ -76,8 +76,9 @@ public class AAEditItemActivity extends AppCompatActivity implements View.OnClic
             mCertificateFile = extras.getString(AvailableAA.COLUMN_NAME_CERTIFICATE);
             certificateText.setText(mCertificateFile);
             aliasEdit.setText(extras.getString(AvailableAA.COLUMN_NAME_ALIAS));
+            mItemID = extras.getInt(AvailableAA._ID);
 
-            mModifiedItem = extras.getInt(POSITION);
+            mItemPosition = extras.getInt(POSITION);
         }
 
         nameEdit.setOnTouchListener(mTouchListener);
@@ -133,6 +134,7 @@ public class AAEditItemActivity extends AppCompatActivity implements View.OnClic
                 finish();
                 return true;
             case android.R.id.home:
+                // If there are no changes
                 if (!mAAHasChanged) {
                     NavUtils.navigateUpFromSameTask(AAEditItemActivity.this);
                     return true;
@@ -237,7 +239,8 @@ public class AAEditItemActivity extends AppCompatActivity implements View.OnClic
                 data.putString(AvailableAA.COLUMN_NAME_PASSWORD, passwordEdit.getText().toString());
                 data.putString(AvailableAA.COLUMN_NAME_CERTIFICATE, mCertificateFile);
                 data.putString(AvailableAA.COLUMN_NAME_ALIAS, aliasEdit.getText().toString());
-                data.putInt(POSITION, mModifiedItem);
+                data.putInt(POSITION, mItemPosition);
+                data.putInt(AvailableAA._ID, mItemID);
                 // Activity finished ok, return the data
                 intent.putExtra(BUNDLE_EXTRAS, data);
                 setResult(RESULT_OK, intent);

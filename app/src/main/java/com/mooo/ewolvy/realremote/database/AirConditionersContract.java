@@ -21,6 +21,7 @@ public final class AirConditionersContract {
         public static final String COLUMN_NAME_PASSWORD = "password";
         public static final String COLUMN_NAME_CERTIFICATE = "certificate";
         public static final String COLUMN_NAME_ALIAS = "alias";
+        public static final String COLUMN_NAME_POSITION = "position";
         public static final String COLUMN_NAME_TEMP = "temperature";
         public static final String COLUMN_NAME_MODE = "mode";
         public static final String COLUMN_NAME_FAN = "fan";

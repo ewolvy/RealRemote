@@ -1,6 +1,7 @@
 package com.mooo.ewolvy.realremote.aalist;
 
 public class AAItem {
+    private int _id;
     private String name;
     private int brand;
     private String server;
@@ -14,6 +15,14 @@ public class AAItem {
     private int mode;
     private int fan;
     private boolean is_on;
+
+    public int get_id() {
+        return _id;
+    }
+
+    public void set_id(int _id) {
+        this._id = _id;
+    }
 
     public int getTemperature() {
         return temperature;

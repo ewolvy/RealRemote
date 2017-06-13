@@ -19,8 +19,10 @@ import android.view.View;
 import com.mooo.ewolvy.realremote.R;
 import com.mooo.ewolvy.realremote.aaremotes.AASuper;
 import com.mooo.ewolvy.realremote.database.AirConditionersContract.AvailableAA;
+import com.mooo.ewolvy.realremote.database.AirConditionersDBAccess;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemClickCallback{
 
@@ -30,7 +32,7 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
     private static final int REQUEST_CODE_NEW = 2;
     private AAAdapter adapter;
 
-    public static ArrayList listData;
+    public static List<AAItem> listData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,12 +62,13 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
             }
         });
 
-        listData = (ArrayList) AAData.getListData(this);
+        //listData = AAData.getListData(this);
+        listData = AirConditionersDBAccess.getAAItems(this);
 
         RecyclerView recView = (RecyclerView) findViewById(R.id.rec_list);
         recView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new AAAdapter(AAData.getListData(this), this);
+        adapter = new AAAdapter(listData, this);
         recView.setAdapter(adapter);
         adapter.setItemClickCallback(this);
 
@@ -75,11 +78,12 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
 
     @Override
     public void onItemClick(View v, int p) {
-        AAItem item = (AAItem) listData.get(p);
+        AAItem item = listData.get(p);
 
         Intent intent = new Intent(this, AAEditItemActivity.class);
 
         Bundle extras = new Bundle();
+        extras.putInt(AvailableAA._ID, item.get_id());
         extras.putString(AvailableAA.COLUMN_NAME_NAME, item.getName());
         extras.putInt(AvailableAA.COLUMN_NAME_BRAND, item.getBrand());
         extras.putString(AvailableAA.COLUMN_NAME_SERVER, item.getServer());
@@ -95,6 +99,7 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setEnterTransition(new Fade(Fade.IN));
             getWindow().setExitTransition(new Fade(Fade.OUT));
+            @SuppressWarnings("unchecked") // array creation must have wildcard
             ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                     this,
                     new Pair<>(v.findViewById(R.id.aa_list_name),
@@ -121,13 +126,16 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
             item.setAlias(extras.getString(AvailableAA.COLUMN_NAME_ALIAS));
             int position = extras.getInt((POSITION));
             item.setPosition(position);
-            item.setTemperature(((AAItem)listData.get(position)).getTemperature());
-            item.setMode(((AAItem)listData.get(position)).getMode());
-            item.setFan(((AAItem)listData.get(position)).getFan());
-            item.setIs_on(((AAItem)listData.get(position)).getIs_on());
+            /*item.setTemperature((listData.get(position)).getTemperature());
+            item.setMode((listData.get(position)).getMode());
+            item.setFan((listData.get(position)).getFan());
+            item.setIs_on((listData.get(position)).getIs_on());*/
 
             listData.set(extras.getInt(POSITION), item);
+            AirConditionersDBAccess.modifyAAItem(item, this);
+
         } else if (requestCode == REQUEST_CODE_NEW && resultCode == RESULT_OK){
+
             AAItem newItem = new AAItem();
             Bundle extras = data.getBundleExtra(BUNDLE_EXTRAS);
             newItem.setName(extras.getString(AvailableAA.COLUMN_NAME_NAME));
@@ -145,10 +153,12 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
 
             newItem.setPosition(listData.size() + 1);
             listData.add(newItem);
-        }
-        if (resultCode == RESULT_OK) {
             AAData.saveListData(listData, this);
-            adapter.setListData(listData);
+        }
+
+        if (resultCode == RESULT_OK) {
+            //AAData.saveListData(listData, this);
+            adapter.setListData((ArrayList<AAItem>)listData);
         }
     }
 
@@ -172,8 +182,8 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
     }
 
     private void moveItem (int oldPos, int newPos){
-        AAItem itemMoved = (AAItem) listData.get(oldPos);
-        AAItem itemSwitched = (AAItem) listData.get(newPos);
+        AAItem itemMoved = listData.get(oldPos);
+        AAItem itemSwitched = listData.get(newPos);
         itemMoved.setPosition(newPos);
         itemSwitched.setPosition(oldPos);
         listData.remove(oldPos);
@@ -187,8 +197,9 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         // User clicked "Yes" button, remove the item.
+                        AirConditionersDBAccess.deleteAAItem(listData.get(pos).get_id(), getApplicationContext());
                         listData.remove(pos);
-                        adapter.setListData(listData);
+                        adapter.setListData((ArrayList<AAItem>)listData);
                     }
                 };
         // Show dialog to confirm deletion
@@ -206,7 +217,7 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked the "No" button, so dismiss the dialog.
                 if (dialog != null) {
-                    adapter.setListData(listData);
+                    adapter.setListData((ArrayList<AAItem>)listData);
                     dialog.dismiss();
                 }
             }
@@ -217,10 +228,9 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
         alertDialog.show();
     }
 
-
     @Override
     protected void onPause() {
         super.onPause();
-        AAData.saveListData(listData, this);
+        //AAData.saveListData(listData, this);
     }
 }

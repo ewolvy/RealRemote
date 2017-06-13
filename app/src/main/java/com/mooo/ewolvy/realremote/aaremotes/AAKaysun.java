@@ -18,15 +18,13 @@ public class AAKaysun extends AASuper {
                     int stateFan,
                     int stateTemp,
                     boolean stateOn,
-                    String statePath,
-                    String stateCertificate){
+                    int id){
         super();
 
         TEMP_MIN = 17;
         TEMP_MAX = 30;
-
-        setCertificateFile(stateCertificate);
-        setServerPath(statePath);
+        BRAND = AA_KAYSUN;
+        ID = id;
 
         // Indicar que todos los modos están disponibles
         for (int x = 0; x<5; x++){AVAILABLE_MODES[x] = true;}

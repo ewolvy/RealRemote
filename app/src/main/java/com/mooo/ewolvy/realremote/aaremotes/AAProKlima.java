@@ -13,14 +13,13 @@ public class AAProKlima extends AASuper{
                       int stateFan,
                       int stateTemp,
                       boolean stateOn,
-                      String statePath,
-                      String stateCertificate){
+                      int id){
         super();
 
         TEMP_MIN = 18;
         TEMP_MAX = 32;
-        setServerPath(statePath);
-        setCertificateFile(stateCertificate);
+        BRAND = AA_PROKLIMA;
+        ID = id;
 
         // Indicar que todos los modos están disponibles
         for (int x = 0; x<5; x++){AVAILABLE_MODES[x] = true;}
