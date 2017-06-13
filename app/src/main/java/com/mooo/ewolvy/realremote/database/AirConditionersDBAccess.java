@@ -20,7 +20,7 @@ public class AirConditionersDBAccess {
 
     // Helper intern method to get data from the database
     private static Cursor getDatabaseData(AirConditionersDBHelper dbHelper, String[] projection) {
-        String orderBy = AvailableAA._ID;
+        String orderBy = AvailableAA.COLUMN_NAME_POSITION;
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -65,16 +65,37 @@ public class AirConditionersDBAccess {
             item.setPassword(dbData.getString(dbData.getColumnIndex(AvailableAA.COLUMN_NAME_PASSWORD)));
             item.setCertificate(dbData.getString(dbData.getColumnIndex(AvailableAA.COLUMN_NAME_CERTIFICATE)));
             item.setAlias(dbData.getString(dbData.getColumnIndex(AvailableAA.COLUMN_NAME_ALIAS)));
-            item.setTemperature(dbData.getInt(dbData.getColumnIndex(AvailableAA.COLUMN_NAME_TEMP)));
-            item.setMode(dbData.getInt(dbData.getColumnIndex(AvailableAA.COLUMN_NAME_MODE)));
-            item.setFan(dbData.getInt(dbData.getColumnIndex(AvailableAA.COLUMN_NAME_FAN)));
-            item.setIs_on(dbData.getInt(dbData.getColumnIndex(AvailableAA.COLUMN_NAME_IS_ON)) == 1);
             data.add(item);
         }
 
         dbData.close();
 
         return data;
+    }
+
+    // Add a new AA with standard temperature, mode, fan and on state
+    public static void addItem (AAItem item, Context context){
+        AirConditionersDBHelper dbHelper = new AirConditionersDBHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(AvailableAA.COLUMN_NAME_NAME, item.getName());
+        values.put(AvailableAA.COLUMN_NAME_BRAND, item.getBrand());
+        values.put(AvailableAA.COLUMN_NAME_SERVER, item.getServer());
+        values.put(AvailableAA.COLUMN_NAME_PORT, item.getPort());
+        values.put(AvailableAA.COLUMN_NAME_USERNAME, item.getUsername());
+        values.put(AvailableAA.COLUMN_NAME_PASSWORD, item.getPassword());
+        values.put(AvailableAA.COLUMN_NAME_CERTIFICATE, item.getCertificate());
+        values.put(AvailableAA.COLUMN_NAME_ALIAS, item.getAlias());
+        values.put(AvailableAA.COLUMN_NAME_TEMP, item.getTemperature());
+        values.put(AvailableAA.COLUMN_NAME_MODE, item.getMode());
+        values.put(AvailableAA.COLUMN_NAME_FAN, item.getFan());
+        values.put(AvailableAA.COLUMN_NAME_IS_ON, (item.getIs_on()) ? 1 : 0);
+        values.put(AvailableAA.COLUMN_NAME_POSITION, item.getPosition());
+
+        db.insert(AvailableAA.TABLE_NAME, null, values);
+        db.close();
     }
 
     // Get all rows of the database, but only the needed columns for the AASuper list
@@ -121,6 +142,7 @@ public class AirConditionersDBAccess {
         return data;
     }
 
+    // Modify values of AAitem (not for position)
     public static void modifyAAItem (AAItem item, Context context){
         ContentValues newValues = new ContentValues();
         newValues.put(AvailableAA.COLUMN_NAME_NAME, item.getName());
@@ -139,6 +161,19 @@ public class AirConditionersDBAccess {
         db.close();
     }
 
+    // Modify position of a single item
+    public static void modifyItemPosition (AAItem item, int newPosition, Context context){
+        ContentValues values = new ContentValues();
+        values.put (AvailableAA.COLUMN_NAME_POSITION, newPosition);
+
+        AirConditionersDBHelper dbHelper = new AirConditionersDBHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        db.update(AvailableAA.TABLE_NAME, values, "_id=" + item.get_id(), null);
+        db.close();
+    }
+
+    // Modify values of AASuper
     public static void modifyAASuper (int id, AASuper item, Context context){
         ContentValues newValues = new ContentValues();
         newValues.put(AvailableAA.COLUMN_NAME_TEMP, item.getCurrentTemp());

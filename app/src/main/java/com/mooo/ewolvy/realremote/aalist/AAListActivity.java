@@ -27,7 +27,6 @@ import java.util.List;
 public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemClickCallback{
 
     private static final String BUNDLE_EXTRAS = "BUNDLE_EXTRAS";
-    private static final String POSITION = "POSITION";
     private static final int REQUEST_CODE_MODIFY = 1;
     private static final int REQUEST_CODE_NEW = 2;
     private AAAdapter adapter;
@@ -54,7 +53,7 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
                 extras.putString(AvailableAA.COLUMN_NAME_PASSWORD, "");
                 extras.putString(AvailableAA.COLUMN_NAME_CERTIFICATE, "");
                 extras.putString(AvailableAA.COLUMN_NAME_ALIAS, "");
-                extras.putInt(POSITION, 0);
+                extras.putInt(AvailableAA.COLUMN_NAME_POSITION, 0);
 
                 intent.putExtra(BUNDLE_EXTRAS, extras);
 
@@ -62,7 +61,6 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
             }
         });
 
-        //listData = AAData.getListData(this);
         listData = AirConditionersDBAccess.getAAItems(this);
 
         RecyclerView recView = (RecyclerView) findViewById(R.id.rec_list);
@@ -92,8 +90,7 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
         extras.putString(AvailableAA.COLUMN_NAME_PASSWORD, item.getPassword());
         extras.putString(AvailableAA.COLUMN_NAME_CERTIFICATE, item.getCertificate());
         extras.putString(AvailableAA.COLUMN_NAME_ALIAS, item.getAlias());
-
-        extras.putInt(POSITION, p);
+        extras.putInt(AvailableAA.COLUMN_NAME_POSITION, p);
         intent.putExtra(BUNDLE_EXTRAS, extras);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -116,6 +113,7 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
         if (requestCode == REQUEST_CODE_MODIFY && resultCode == RESULT_OK){
             AAItem item = new AAItem();
             Bundle extras = data.getBundleExtra(BUNDLE_EXTRAS);
+            item.set_id(extras.getInt(AvailableAA._ID));
             item.setName(extras.getString(AvailableAA.COLUMN_NAME_NAME));
             item.setBrand(extras.getInt(AvailableAA.COLUMN_NAME_BRAND));
             item.setServer(extras.getString(AvailableAA.COLUMN_NAME_SERVER));
@@ -124,20 +122,15 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
             item.setPassword(extras.getString(AvailableAA.COLUMN_NAME_PASSWORD));
             item.setCertificate(extras.getString(AvailableAA.COLUMN_NAME_CERTIFICATE));
             item.setAlias(extras.getString(AvailableAA.COLUMN_NAME_ALIAS));
-            int position = extras.getInt((POSITION));
-            item.setPosition(position);
-            /*item.setTemperature((listData.get(position)).getTemperature());
-            item.setMode((listData.get(position)).getMode());
-            item.setFan((listData.get(position)).getFan());
-            item.setIs_on((listData.get(position)).getIs_on());*/
 
-            listData.set(extras.getInt(POSITION), item);
+            listData.set(extras.getInt(AvailableAA.COLUMN_NAME_POSITION), item);
             AirConditionersDBAccess.modifyAAItem(item, this);
 
         } else if (requestCode == REQUEST_CODE_NEW && resultCode == RESULT_OK){
 
             AAItem newItem = new AAItem();
             Bundle extras = data.getBundleExtra(BUNDLE_EXTRAS);
+
             newItem.setName(extras.getString(AvailableAA.COLUMN_NAME_NAME));
             newItem.setBrand(extras.getInt(AvailableAA.COLUMN_NAME_BRAND));
             newItem.setServer(extras.getString(AvailableAA.COLUMN_NAME_SERVER));
@@ -150,15 +143,15 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
             newItem.setMode(AASuper.AUTO_MODE);
             newItem.setFan(AASuper.AUTO_FAN);
             newItem.setIs_on(false);
+            newItem.setPosition(listData.size());
 
-            newItem.setPosition(listData.size() + 1);
             listData.add(newItem);
-            AAData.saveListData(listData, this);
+            AirConditionersDBAccess.addItem(newItem, this);
         }
 
         if (resultCode == RESULT_OK) {
-            //AAData.saveListData(listData, this);
             adapter.setListData((ArrayList<AAItem>)listData);
+            adapter.notifyDataSetChanged();
         }
     }
 
@@ -182,12 +175,19 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
     }
 
     private void moveItem (int oldPos, int newPos){
-        AAItem itemMoved = listData.get(oldPos);
-        AAItem itemSwitched = listData.get(newPos);
-        itemMoved.setPosition(newPos);
-        itemSwitched.setPosition(oldPos);
+        // This method is called not only on release, but every time the selected item is moving
+        // through the list. That's why it's working to just swap the old and new positions
+        AAItem itemOldPos = listData.get(oldPos);
+        AAItem itemNewPos = listData.get(newPos);
+
+        AirConditionersDBAccess.modifyItemPosition(itemOldPos, newPos, this);
+        AirConditionersDBAccess.modifyItemPosition(itemNewPos, oldPos, this);
+
+        itemOldPos.setPosition(newPos);
+        itemNewPos.setPosition(oldPos);
+
         listData.remove(oldPos);
-        listData.add(newPos, itemMoved);
+        listData.add(newPos, itemOldPos);
         adapter.notifyItemMoved(oldPos, newPos);
     }
 
@@ -226,11 +226,5 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
         // Create and show the AlertDialog
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        //AAData.saveListData(listData, this);
     }
 }

@@ -37,11 +37,10 @@ public class AAEditItemActivity extends AppCompatActivity implements View.OnClic
 
     static final int PERMISSION_SHOW_FILE_DIALOG = 1;
     private static final String BUNDLE_EXTRAS = "BUNDLE_EXTRAS";
-    private static final String POSITION = "POSITION";
 
     private String mCertificateFile = "";
     private boolean mAAHasChanged = false;
-    private boolean mSavePressed = false;
+    private boolean mSavePressed = false, mNewItem = true;
     private int mItemPosition, mItemID;
 
     EditText nameEdit, serverEdit, portEdit, usernameEdit, passwordEdit, aliasEdit;
@@ -77,8 +76,9 @@ public class AAEditItemActivity extends AppCompatActivity implements View.OnClic
             certificateText.setText(mCertificateFile);
             aliasEdit.setText(extras.getString(AvailableAA.COLUMN_NAME_ALIAS));
             mItemID = extras.getInt(AvailableAA._ID);
+            mNewItem = false;
 
-            mItemPosition = extras.getInt(POSITION);
+            mItemPosition = extras.getInt(AvailableAA.COLUMN_NAME_POSITION);
         }
 
         nameEdit.setOnTouchListener(mTouchListener);
@@ -227,7 +227,7 @@ public class AAEditItemActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void finish() {
-        if (mSavePressed) {
+        if (mSavePressed && mAAHasChanged) {
             if (checkData()) {
                 Bundle data = new Bundle();
                 Intent intent = new Intent();
@@ -239,8 +239,8 @@ public class AAEditItemActivity extends AppCompatActivity implements View.OnClic
                 data.putString(AvailableAA.COLUMN_NAME_PASSWORD, passwordEdit.getText().toString());
                 data.putString(AvailableAA.COLUMN_NAME_CERTIFICATE, mCertificateFile);
                 data.putString(AvailableAA.COLUMN_NAME_ALIAS, aliasEdit.getText().toString());
-                data.putInt(POSITION, mItemPosition);
-                data.putInt(AvailableAA._ID, mItemID);
+                data.putInt(AvailableAA.COLUMN_NAME_POSITION, mItemPosition);
+                if (!mNewItem){ data.putInt(AvailableAA._ID, mItemID); }
                 // Activity finished ok, return the data
                 intent.putExtra(BUNDLE_EXTRAS, data);
                 setResult(RESULT_OK, intent);
@@ -265,15 +265,15 @@ public class AAEditItemActivity extends AppCompatActivity implements View.OnClic
         super.finish();
     }
 
-    private boolean checkData (){
-        if (nameEdit.getText().toString().equals("")) return false;
-        if (serverEdit.getText().toString().equals("")) return false;
-        if (portEdit.getText().toString().equals("")) return false;
-        if (usernameEdit.getText().toString().equals("")) return false;
-        if (passwordEdit.getText().toString().equals("")) return false;
-        if (mCertificateFile.equals("")) return false;
-        if (aliasEdit.getText().toString().equals("")) return false;
-        return true;
+    private boolean checkData () {
+        // If any field is empty return false, else return true
+        return !nameEdit.getText().toString().equals("") &&
+                !serverEdit.getText().toString().equals("") &&
+                !portEdit.getText().toString().equals("") &&
+                !usernameEdit.getText().toString().equals("") &&
+                !passwordEdit.getText().toString().equals("") &&
+                !mCertificateFile.equals("") &&
+                !aliasEdit.getText().toString().equals("");
     }
 
     public void showFileDialog(final Context context) {
