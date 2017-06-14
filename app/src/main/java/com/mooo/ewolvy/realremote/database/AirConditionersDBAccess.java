@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.mooo.ewolvy.realremote.aalist.AAItem;
 import com.mooo.ewolvy.realremote.aaremotes.AAKaysun;
@@ -109,7 +110,8 @@ public class AirConditionersDBAccess {
                 AvailableAA.COLUMN_NAME_TEMP,
                 AvailableAA.COLUMN_NAME_MODE,
                 AvailableAA.COLUMN_NAME_FAN,
-                AvailableAA.COLUMN_NAME_IS_ON
+                AvailableAA.COLUMN_NAME_IS_ON,
+                AvailableAA.COLUMN_NAME_POSITION
         };
 
         AirConditionersDBHelper dbHelper = new AirConditionersDBHelper(context);
@@ -192,10 +194,20 @@ public class AirConditionersDBAccess {
         AirConditionersDBHelper dbHelper = new AirConditionersDBHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        String whereClause = "_id=?";
-        String[] whereArgs = new String[] { String.valueOf(id) };
+        // Before deleting the required item, we must change the position of all under it
+        // Using SQL: UPDATE table SET position = position - 1 WHERE position < id
+        String modifyPositionSQL = "UPDATE " + AvailableAA.TABLE_NAME;
+        modifyPositionSQL = modifyPositionSQL + " SET " + AvailableAA.COLUMN_NAME_POSITION;
+        modifyPositionSQL = modifyPositionSQL + " = " + AvailableAA.COLUMN_NAME_POSITION + " -1 ";
+        modifyPositionSQL = modifyPositionSQL + " WHERE " + AvailableAA.COLUMN_NAME_POSITION;
+        modifyPositionSQL = modifyPositionSQL + " > " + id;
+        db.execSQL(modifyPositionSQL);
 
-        db.delete(AvailableAA.TABLE_NAME, whereClause, whereArgs);
+        String deleteWhereClause = "_id=?";
+        String[] deleteWhereArgs = new String[] { String.valueOf(id) };
+
+        db.delete(AvailableAA.TABLE_NAME, deleteWhereClause, deleteWhereArgs);
         db.close();
+        Log.v("DBACCESS DELETEAAITEM", "Deleted item: " + id);
     }
 }

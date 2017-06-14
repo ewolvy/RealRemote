@@ -29,8 +29,8 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
     private static final String BUNDLE_EXTRAS = "BUNDLE_EXTRAS";
     private static final int REQUEST_CODE_MODIFY = 1;
     private static final int REQUEST_CODE_NEW = 2;
-    private AAAdapter adapter;
 
+    public static AAAdapter adapter;
     public static List<AAItem> listData;
 
     @Override
@@ -150,7 +150,6 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
         }
 
         if (resultCode == RESULT_OK) {
-            adapter.setListData((ArrayList<AAItem>)listData);
             adapter.notifyDataSetChanged();
         }
     }
@@ -199,7 +198,7 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
                         // User clicked "Yes" button, remove the item.
                         AirConditionersDBAccess.deleteAAItem(listData.get(pos).get_id(), getApplicationContext());
                         listData.remove(pos);
-                        adapter.setListData((ArrayList<AAItem>)listData);
+                        adapter.notifyDataSetChanged();
                     }
                 };
         // Show dialog to confirm deletion
@@ -217,7 +216,8 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked the "No" button, so dismiss the dialog.
                 if (dialog != null) {
-                    adapter.setListData((ArrayList<AAItem>)listData);
+                    //adapter.setDataSet((ArrayList<AAItem>)listData);
+                    adapter.notifyDataSetChanged();
                     dialog.dismiss();
                 }
             }

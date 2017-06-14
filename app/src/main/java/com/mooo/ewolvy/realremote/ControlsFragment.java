@@ -10,10 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mooo.ewolvy.realremote.aalist.AAData;
 import com.mooo.ewolvy.realremote.aalist.AAItem;
 import com.mooo.ewolvy.realremote.aaremotes.*;
 import com.mooo.ewolvy.realremote.database.AirConditionersContract;
+import com.mooo.ewolvy.realremote.database.AirConditionersDBAccess;
 
 public class ControlsFragment extends Fragment {
     AASuper state;
@@ -91,7 +91,7 @@ public class ControlsFragment extends Fragment {
         Bundle args = this.getArguments();
         if (args != null) {
             int position = args.getInt(ARG_SECTION_NUMBER);
-            item = AAData.getListData(getContext()).get(position);
+            item = AirConditionersDBAccess.getAAItems(getContext()).get(position);
         }
 
         // Create AA object to manage the AA

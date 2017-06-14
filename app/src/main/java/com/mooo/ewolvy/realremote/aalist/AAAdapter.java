@@ -2,18 +2,18 @@ package com.mooo.ewolvy.realremote.aalist;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.mooo.ewolvy.realremote.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AAAdapter extends RecyclerView.Adapter<AAAdapter.AAHolder>{
 
-    private List<AAItem> listData;
+    private List<AAItem> dataSet;
     private LayoutInflater inflater;
 
     private ItemClickCallback itemClickCallback;
@@ -26,9 +26,9 @@ public class AAAdapter extends RecyclerView.Adapter<AAAdapter.AAHolder>{
         this.itemClickCallback = itemClickCallback;
     }
 
-    public AAAdapter (List<AAItem> listData, Context c){
+    public AAAdapter (List<AAItem> dataSet, Context c){
         this.inflater = LayoutInflater.from(c);
-        this.listData = listData;
+        this.dataSet = dataSet;
     }
 
     @Override
@@ -39,7 +39,7 @@ public class AAAdapter extends RecyclerView.Adapter<AAAdapter.AAHolder>{
 
     @Override
     public void onBindViewHolder(AAHolder holder, int position) {
-        AAItem item = listData.get(position);
+        AAItem item = dataSet.get(position);
         holder.name.setText(item.getName());
         String serverText = item.getServer();
         serverText = serverText.concat(":");
@@ -49,19 +49,19 @@ public class AAAdapter extends RecyclerView.Adapter<AAAdapter.AAHolder>{
         holder.server.setText(serverText);
     }
 
-    public void setListData(ArrayList<AAItem> exerciseList){
-        if (listData != null) {
-            listData.clear();
-            listData.addAll(exerciseList);
+    /*public void setDataSet(List<AAItem> exerciseList){
+        if (dataSet != null) {
+            dataSet.clear();
+            dataSet.addAll(exerciseList);
         } else {
-            listData = exerciseList;
+            dataSet = exerciseList;
         }
         notifyDataSetChanged();
-    }
+    }*/
 
     @Override
     public int getItemCount() {
-        return listData.size();
+        return dataSet.size();
     }
 
     class AAHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
