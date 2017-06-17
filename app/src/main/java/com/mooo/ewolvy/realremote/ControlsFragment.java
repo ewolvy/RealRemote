@@ -101,14 +101,16 @@ public class ControlsFragment extends Fragment {
                         item.getFan(),
                         item.getTemperature(),
                         item.getIs_on(),
-                        item.get_id());
+                        item.get_id(),
+                        item.getName());
                 break;
             case AirConditionersContract.AA_PROKLIMA:
                 state = new AAProKlima(item.getMode(),
                         item.getFan(),
                         item.getTemperature(),
                         item.getIs_on(),
-                        item.get_id());
+                        item.get_id(),
+                        item.getName());
                 break;
         }
 

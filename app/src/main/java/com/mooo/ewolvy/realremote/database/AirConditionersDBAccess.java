@@ -75,7 +75,7 @@ public class AirConditionersDBAccess {
     }
 
     // Add a new AA with standard temperature, mode, fan and on state
-    public static void addItem (AAItem item, Context context){
+    public static long addItem (AAItem item, Context context){
         AirConditionersDBHelper dbHelper = new AirConditionersDBHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -95,8 +95,9 @@ public class AirConditionersDBAccess {
         values.put(AvailableAA.COLUMN_NAME_IS_ON, (item.getIs_on()) ? 1 : 0);
         values.put(AvailableAA.COLUMN_NAME_POSITION, item.getPosition());
 
-        db.insert(AvailableAA.TABLE_NAME, null, values);
+        long id = db.insert(AvailableAA.TABLE_NAME, null, values);
         db.close();
+        return id;
     }
 
     // Get all rows of the database, but only the needed columns for the AASuper list
@@ -125,7 +126,8 @@ public class AirConditionersDBAccess {
                             dbData.getInt(dbData.getColumnIndex(AvailableAA.COLUMN_NAME_FAN)),
                             dbData.getInt(dbData.getColumnIndex(AvailableAA.COLUMN_NAME_TEMP)),
                             dbData.getInt(dbData.getColumnIndex(AvailableAA.COLUMN_NAME_IS_ON)) == 1,
-                            dbData.getInt(dbData.getColumnIndex(AvailableAA._ID)));
+                            dbData.getInt(dbData.getColumnIndex(AvailableAA._ID)),
+                            dbData.getString(dbData.getColumnIndex(AvailableAA.COLUMN_NAME_NAME)));
                     data.add (item);
                     break;
                 case AirConditionersContract.AA_PROKLIMA:
@@ -133,7 +135,8 @@ public class AirConditionersDBAccess {
                             dbData.getInt(dbData.getColumnIndex(AvailableAA.COLUMN_NAME_FAN)),
                             dbData.getInt(dbData.getColumnIndex(AvailableAA.COLUMN_NAME_TEMP)),
                             dbData.getInt(dbData.getColumnIndex(AvailableAA.COLUMN_NAME_IS_ON)) == 1,
-                            dbData.getInt(dbData.getColumnIndex(AvailableAA._ID)));
+                            dbData.getInt(dbData.getColumnIndex(AvailableAA._ID)),
+                            dbData.getString(dbData.getColumnIndex(AvailableAA.COLUMN_NAME_NAME)));
                     data.add (item);
                     break;
             }
@@ -175,21 +178,6 @@ public class AirConditionersDBAccess {
         db.close();
     }
 
-    // Modify values of AASuper
-    public static void modifyAASuper (int id, AASuper item, Context context){
-        ContentValues newValues = new ContentValues();
-        newValues.put(AvailableAA.COLUMN_NAME_TEMP, item.getCurrentTemp());
-        newValues.put(AvailableAA.COLUMN_NAME_MODE, item.getMode());
-        newValues.put(AvailableAA.COLUMN_NAME_FAN, item.getFan());
-        newValues.put(AvailableAA.COLUMN_NAME_IS_ON, item.getIsOn());
-
-        AirConditionersDBHelper dbHelper = new AirConditionersDBHelper(context);
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        db.update(AvailableAA.TABLE_NAME, newValues, "_id=" + id, null);
-        db.close();
-    }
-
     public static void deleteAAItem (int id, Context context){
         AirConditionersDBHelper dbHelper = new AirConditionersDBHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -209,5 +197,20 @@ public class AirConditionersDBAccess {
         db.delete(AvailableAA.TABLE_NAME, deleteWhereClause, deleteWhereArgs);
         db.close();
         Log.v("DBACCESS DELETEAAITEM", "Deleted item: " + id);
+    }
+
+    // Modify values of AASuper
+    public static void modifyAASuper (int id, AASuper item, Context context){
+        ContentValues newValues = new ContentValues();
+        newValues.put(AvailableAA.COLUMN_NAME_TEMP, item.getCurrentTemp());
+        newValues.put(AvailableAA.COLUMN_NAME_MODE, item.getMode());
+        newValues.put(AvailableAA.COLUMN_NAME_FAN, item.getFan());
+        newValues.put(AvailableAA.COLUMN_NAME_IS_ON, item.getIsOn());
+
+        AirConditionersDBHelper dbHelper = new AirConditionersDBHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        db.update(AvailableAA.TABLE_NAME, newValues, "_id=" + id, null);
+        db.close();
     }
 }

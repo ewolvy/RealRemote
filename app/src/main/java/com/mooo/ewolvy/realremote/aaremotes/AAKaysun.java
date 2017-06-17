@@ -18,13 +18,15 @@ public class AAKaysun extends AASuper {
                     int stateFan,
                     int stateTemp,
                     boolean stateOn,
-                    int id){
+                    int id,
+                    String name){
         super();
 
         TEMP_MIN = 17;
         TEMP_MAX = 30;
         BRAND = AA_KAYSUN;
         ID = id;
+        NAME = name;
 
         // Indicar que todos los modos están disponibles
         for (int x = 0; x<5; x++){AVAILABLE_MODES[x] = true;}

@@ -21,7 +21,6 @@ import com.mooo.ewolvy.realremote.aaremotes.AASuper;
 import com.mooo.ewolvy.realremote.database.AirConditionersContract.AvailableAA;
 import com.mooo.ewolvy.realremote.database.AirConditionersDBAccess;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemClickCallback{
@@ -145,8 +144,10 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
             newItem.setIs_on(false);
             newItem.setPosition(listData.size());
 
+            long id = AirConditionersDBAccess.addItem(newItem, this);
+
+            newItem.set_id((int) id);
             listData.add(newItem);
-            AirConditionersDBAccess.addItem(newItem, this);
         }
 
         if (resultCode == RESULT_OK) {

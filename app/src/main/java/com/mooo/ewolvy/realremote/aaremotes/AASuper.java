@@ -24,9 +24,12 @@ public abstract class AASuper {
     // Temperature constants and variables (for inheritance on specific devices)
     public int TEMP_MIN;
     public int TEMP_MAX;
+    public static final int NONEXISTENT_TEMP = 99;
+
+    // Inheritance variables for list management purposes
     public int BRAND;
     public int ID;
-    public static final int NONEXISTENT_TEMP = 99;
+    public String NAME;
 
     // Array of available modes to be defined on child classes
     boolean AVAILABLE_MODES[] = new boolean[5];

@@ -12,21 +12,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.mooo.ewolvy.realremote.aalist.AAData;
-import com.mooo.ewolvy.realremote.aalist.AAItem;
+import com.mooo.ewolvy.realremote.aaremotes.AASuper;
+import com.mooo.ewolvy.realremote.database.AirConditionersDBAccess;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static ArrayList listData;
+    public static List<AASuper> listData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        listData = (ArrayList) AAData.getListData(this);
+        listData = AirConditionersDBAccess.getAASuper(this);
         if (listData.size() != 0){
             (findViewById(R.id.empty_aa_text)).setVisibility(TextView.INVISIBLE);
         }
@@ -105,8 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            AAItem item = (AAItem) listData.get(position);
-            return item.getName();
+            return listData.get(position).NAME;
         }
     }
 }
