@@ -2,7 +2,6 @@ package com.mooo.ewolvy.realremote.aalist;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,22 +10,22 @@ import com.mooo.ewolvy.realremote.R;
 
 import java.util.List;
 
-public class AAAdapter extends RecyclerView.Adapter<AAAdapter.AAHolder>{
+class AAAdapter extends RecyclerView.Adapter<AAAdapter.AAHolder>{
 
     private List<AAItem> dataSet;
     private LayoutInflater inflater;
 
     private ItemClickCallback itemClickCallback;
 
-    public interface ItemClickCallback{
+    interface ItemClickCallback{
         void onItemClick(View v, int p);
     }
 
-    public void setItemClickCallback(final ItemClickCallback itemClickCallback){
+    void setItemClickCallback(final ItemClickCallback itemClickCallback){
         this.itemClickCallback = itemClickCallback;
     }
 
-    public AAAdapter (List<AAItem> dataSet, Context c){
+    AAAdapter (List<AAItem> dataSet, Context c){
         this.inflater = LayoutInflater.from(c);
         this.dataSet = dataSet;
     }
@@ -49,16 +48,6 @@ public class AAAdapter extends RecyclerView.Adapter<AAAdapter.AAHolder>{
         holder.server.setText(serverText);
     }
 
-    /*public void setDataSet(List<AAItem> exerciseList){
-        if (dataSet != null) {
-            dataSet.clear();
-            dataSet.addAll(exerciseList);
-        } else {
-            dataSet = exerciseList;
-        }
-        notifyDataSetChanged();
-    }*/
-
     @Override
     public int getItemCount() {
         return dataSet.size();
@@ -69,7 +58,7 @@ public class AAAdapter extends RecyclerView.Adapter<AAAdapter.AAHolder>{
         private TextView server;
         private View container;
 
-        public AAHolder(View itemView) {
+        AAHolder(View itemView) {
             super(itemView);
 
             name = (TextView) itemView.findViewById(R.id.aa_list_name);

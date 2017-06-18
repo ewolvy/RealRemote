@@ -14,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.transition.Fade;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.mooo.ewolvy.realremote.R;
@@ -28,7 +29,6 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
     private static final String BUNDLE_EXTRAS = "BUNDLE_EXTRAS";
     private static final int REQUEST_CODE_MODIFY = 1;
     private static final int REQUEST_CODE_NEW = 2;
-    private static final int RESULT_CODE_SETTINGS = 3;
 
     public static AAAdapter adapter;
     public static List<AAItem> listData;
@@ -75,12 +75,23 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void finish() {
         setResult(RESULT_OK);
         super.finish ();
     }
 
-        @Override
+    @Override
     public void onItemClick(View v, int p) {
         AAItem item = listData.get(p);
 

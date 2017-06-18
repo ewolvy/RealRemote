@@ -2,8 +2,8 @@ package com.mooo.ewolvy.realremote.aaremotes;
 
 public abstract class AASuper {
     // Brands constants
-    public static final int AA_KAYSUN = 0;
-    public static final int AA_PROKLIMA = 1;
+    static final int AA_KAYSUN = 0;
+    static final int AA_PROKLIMA = 1;
 
 
     // Mode constants
@@ -19,24 +19,24 @@ public abstract class AASuper {
     public static final int LEVEL1_FAN = 1;
     public static final int LEVEL2_FAN = 2;
     public static final int LEVEL3_FAN = 3;
-    public static final int SPECIAL_FAN = 4;
+    static final int SPECIAL_FAN = 4;
 
     // Temperature constants and variables (for inheritance on specific devices)
     public int TEMP_MIN;
     public int TEMP_MAX;
-    public static final int NONEXISTENT_TEMP = 99;
+    // public static final int NONEXISTENT_TEMP = 99;
 
     // Inheritance variables for list management purposes
-    public int BRAND;
-    public int ID;
+    int BRAND;
+    int ID;
     public String NAME;
 
     // Array of available modes to be defined on child classes
     boolean AVAILABLE_MODES[] = new boolean[5];
 
     // Variables
-    private String serverPath;
-    private String certificateFile;
+    // private String serverPath;
+    // private String certificateFile;
     private boolean isOn;
     private int currentMode;
     private int currentFan;
@@ -48,12 +48,12 @@ public abstract class AASuper {
     AASuper (){} // Empty constructor to prevent instantiating the class
 
     // Getters methods for variables //
-    public String getServerPath(){
+    /*public String getServerPath(){
         return serverPath;
-    }
-    public String getCertificateFile(){
+    }*/
+    /*public String getCertificateFile(){
         return certificateFile;
-    }
+    }*/
     public boolean getIsOn(){return isOn;}
     public int getMode() {
         return currentMode;
@@ -68,12 +68,12 @@ public abstract class AASuper {
     }
 
     // Setters methods for variables //
-    public void setServerPath(String serverPath){
+    /*public void setServerPath(String serverPath){
         this.serverPath = serverPath;
     }
     public void setCertificateFile(String certificateFile){
         this.certificateFile = certificateFile;
-    }
+    }*/
     public void setOn (boolean on){this.isOn = on;}
     public boolean setMode(int mode) {
         if (mode < AUTO_MODE || mode > FAN_MODE) {
@@ -95,13 +95,13 @@ public abstract class AASuper {
             return true;
         }
     }
-    public void setActiveFan(boolean activeFan){
+    void setActiveFan(boolean activeFan){
         this.activeFan = activeFan;
     }
-    public void setActiveTemp(boolean activeTemp){
+    void setActiveTemp(boolean activeTemp){
         this.activeTemp = activeTemp;
     }
-    public void setCurrentTemp(int currentTemp){
+    void setCurrentTemp(int currentTemp){
         this.currentTemp = currentTemp;
     }
     // End of setters and getters //

@@ -68,8 +68,7 @@ class SSLServer {
             // public static Context context;
             // And initialized in MainActivity.onCreate() as:
             // MainActivity.context = getApplicationContext();
-            InputStream caInput = context.getResources().openRawResource(R.raw.ewolvy);
-            Certificate ca = cf.generateCertificate(caInput);
+
             // System.out.println("ca=" + ((X509Certificate) ca).getSubjectDN());
             */
 
@@ -150,7 +149,7 @@ class SSLServer {
             fullAddress = fullAddress + ":";
             fullAddress = fullAddress + port;
             fullAddress = fullAddress + "/";
-            fullAddress = fullAddress + currentAAState.getServerPath();
+            //fullAddress = fullAddress + currentAAState.getServerPath();
             fullAddress = fullAddress + "/";
             fullAddress = fullAddress + codeToSend;
         }

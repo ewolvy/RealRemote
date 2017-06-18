@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import com.mooo.ewolvy.realremote.database.AirConditionersContract.AvailableAA;
 
-public class AirConditionersDBHelper extends SQLiteOpenHelper{
+class AirConditionersDBHelper extends SQLiteOpenHelper{
 
     // Constants for database name and version. When upgrading the contract, version must be updated
     private static final int DATABASE_VERSION = 3;
@@ -31,7 +31,7 @@ public class AirConditionersDBHelper extends SQLiteOpenHelper{
 
 
     // Required constructor calling super
-    public AirConditionersDBHelper(Context context){
+    AirConditionersDBHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

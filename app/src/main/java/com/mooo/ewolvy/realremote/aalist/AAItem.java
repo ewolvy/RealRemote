@@ -124,7 +124,7 @@ public class AAItem {
         return position;
     }
 
-    public void setPosition(int position) {
+    void setPosition(int position) {
         this.position = position;
     }
 }
