@@ -19,6 +19,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final int RESULT_CODE_SETTINGS = 3;
     public static List<AASuper> listData;
 
     @Override
@@ -55,6 +56,16 @@ public class MainActivity extends AppCompatActivity {
         mViewPager.setAdapter(mSectionsPagerAdapter);
     }
 
+    // To make changes on settings apply on activity close
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == RESULT_CODE_SETTINGS && resultCode==RESULT_OK){
+            Intent refresh = new Intent(this, MainActivity.class);
+            startActivity(refresh);
+            this.finish();
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -74,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             Intent settingsIntent = new Intent(this,
                     com.mooo.ewolvy.realremote.aalist.AAListActivity.class);
-            startActivity(settingsIntent);
+            startActivityForResult(settingsIntent, RESULT_CODE_SETTINGS);
             return true;
         }
 

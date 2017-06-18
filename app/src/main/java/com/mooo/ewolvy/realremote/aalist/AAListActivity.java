@@ -28,6 +28,7 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
     private static final String BUNDLE_EXTRAS = "BUNDLE_EXTRAS";
     private static final int REQUEST_CODE_MODIFY = 1;
     private static final int REQUEST_CODE_NEW = 2;
+    private static final int RESULT_CODE_SETTINGS = 3;
 
     public static AAAdapter adapter;
     public static List<AAItem> listData;
@@ -74,6 +75,12 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
     }
 
     @Override
+    public void finish() {
+        setResult(RESULT_OK);
+        super.finish ();
+    }
+
+        @Override
     public void onItemClick(View v, int p) {
         AAItem item = listData.get(p);
 
