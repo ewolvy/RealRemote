@@ -200,7 +200,7 @@ public class AirConditionersDBAccess {
     }
 
     // Modify values of AASuper
-    public static void modifyAASuper (int id, AASuper item, Context context){
+    public static void modifyAASuper (AASuper item, Context context){
         ContentValues newValues = new ContentValues();
         newValues.put(AvailableAA.COLUMN_NAME_TEMP, item.getCurrentTemp());
         newValues.put(AvailableAA.COLUMN_NAME_MODE, item.getMode());
@@ -210,7 +210,7 @@ public class AirConditionersDBAccess {
         AirConditionersDBHelper dbHelper = new AirConditionersDBHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        db.update(AvailableAA.TABLE_NAME, newValues, "_id=" + id, null);
+        db.update(AvailableAA.TABLE_NAME, newValues, "_id=" + item.ID, null);
         db.close();
     }
 }

@@ -28,7 +28,7 @@ public abstract class AASuper {
 
     // Inheritance variables for list management purposes
     int BRAND;
-    int ID;
+    public int ID;
     public String NAME;
 
     // Array of available modes to be defined on child classes

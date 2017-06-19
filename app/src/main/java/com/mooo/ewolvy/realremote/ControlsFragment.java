@@ -2,7 +2,6 @@ package com.mooo.ewolvy.realremote;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,16 +9,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mooo.ewolvy.realremote.aalist.AAItem;
 import com.mooo.ewolvy.realremote.aaremotes.*;
-import com.mooo.ewolvy.realremote.database.AirConditionersContract;
 import com.mooo.ewolvy.realremote.database.AirConditionersDBAccess;
 
 public class ControlsFragment extends Fragment {
     AASuper state;
     SSLServer myServer;
     View fragView;
-    AAItem item;
 
     public ControlsFragment(){}
 
@@ -91,42 +87,10 @@ public class ControlsFragment extends Fragment {
         Bundle args = this.getArguments();
         if (args != null) {
             int position = args.getInt(ARG_SECTION_NUMBER);
-            item = AirConditionersDBAccess.getAAItems(getContext()).get(position);
+            state = AirConditionersDBAccess.getAASuper(getContext()).get(position);
         }
-
-        // Create AA object to manage the AA
-        switch (item.getBrand()){
-            case AirConditionersContract.AA_KAYSUN:
-                state = new AAKaysun(item.getMode(),
-                        item.getFan(),
-                        item.getTemperature(),
-                        item.getIs_on(),
-                        item.get_id(),
-                        item.getName());
-                break;
-            case AirConditionersContract.AA_PROKLIMA:
-                state = new AAProKlima(item.getMode(),
-                        item.getFan(),
-                        item.getTemperature(),
-                        item.getIs_on(),
-                        item.get_id(),
-                        item.getName());
-                break;
-        }
-
+        updateView();
         return fragView;
-    }
-
-    @Override
-    public void onPause() {
-        Log.v("CONTROLS_FRAGMENT", "Fragment paused: " + item.getPosition());
-        super.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.v("CONTROLS_FRAGMENT", "Fragment resumed: " + item.getPosition());
     }
 
     public void modeClick() {
@@ -204,12 +168,13 @@ public class ControlsFragment extends Fragment {
                     break;
             }
             state.setMode(nextMode);
-            item.setMode(nextMode);
+            AirConditionersDBAccess.modifyAASuper(state, getContext());
         }
     }
 
     public void fanClick() {
         if (!state.isActiveFan()){return;}
+
         TextView fanView;
         switch (state.getFan()) {
             case AASuper.AUTO_FAN:
@@ -221,7 +186,6 @@ public class ControlsFragment extends Fragment {
                 if (fanView != null) {
                     fanView.setVisibility(View.VISIBLE);
                     state.setFan(AASuper.LEVEL1_FAN);
-                    item.setFan(AASuper.LEVEL1_FAN);
                 }
                 break;
 
@@ -230,7 +194,6 @@ public class ControlsFragment extends Fragment {
                 if (fanView != null) {
                     fanView.setVisibility(View.VISIBLE);
                     state.setFan(AASuper.LEVEL2_FAN);
-                    item.setFan(AASuper.LEVEL2_FAN);
                 }
                 break;
 
@@ -239,7 +202,6 @@ public class ControlsFragment extends Fragment {
                 if (fanView != null) {
                     fanView.setVisibility(View.VISIBLE);
                     state.setFan(AASuper.LEVEL3_FAN);
-                    item.setFan(AASuper.LEVEL3_FAN);
                 }
                 break;
 
@@ -260,29 +222,29 @@ public class ControlsFragment extends Fragment {
                 if (fanView != null) {
                     fanView.setVisibility(View.VISIBLE);
                     state.setFan(AASuper.AUTO_FAN);
-                    item.setFan(AASuper.AUTO_FAN);
                 }
                 break;
         }
+        AirConditionersDBAccess.modifyAASuper(state, getContext());
     }
 
     public void tempMinusClick() {
         if (state.getCurrentTemp() > state.TEMP_MIN && state.isActiveTemp()){
             state.setMinusTemp();
-            item.setTemperature(state.getCurrentTemp());
             TextView tempView = (TextView) fragView.findViewById(R.id.tempView);
             String temperature = Integer.toString(state.getCurrentTemp());
             if (tempView != null) tempView.setText(temperature);
+            AirConditionersDBAccess.modifyAASuper(state, getContext());
         }
     }
 
     public void tempPlusClick() {
         if (state.getCurrentTemp() < state.TEMP_MAX && state.isActiveTemp()){
             state.setPlusTemp();
-            item.setTemperature(state.getCurrentTemp());
             TextView tempView = (TextView) fragView.findViewById(R.id.tempView);
             String temperature = Integer.toString(state.getCurrentTemp());
             if (tempView != null) tempView.setText(temperature);
+            AirConditionersDBAccess.modifyAASuper(state, getContext());
         }
     }
 
@@ -290,7 +252,7 @@ public class ControlsFragment extends Fragment {
         if (myServer != null){
             // Send the PowerOff code.
             myServer.sendCode (state.getPowerOff(), getActivity().getApplicationContext(), state, (ImageView) fragView.findViewById(R.id.onOffSign));
-            item.setIs_on(false);
+            AirConditionersDBAccess.modifyAASuper(state, getContext());
         }else{
             Toast toast = Toast.makeText(getActivity().getApplicationContext(), getString(R.string.server_data_missing), Toast.LENGTH_LONG);
             toast.show();
@@ -300,6 +262,7 @@ public class ControlsFragment extends Fragment {
     public void sendClick() {
         if (myServer != null){      // If the options were set, send the command, else ask the user to fullfill the settings
             myServer.sendCode (state.getCommand(), getActivity().getApplicationContext(), state, (ImageView) fragView.findViewById(R.id.onOffSign));
+            AirConditionersDBAccess.modifyAASuper(state, getContext());
         }else{
             Toast toast = Toast.makeText(getActivity().getApplicationContext(), getString(R.string.server_data_missing), Toast.LENGTH_LONG);
             toast.show();
