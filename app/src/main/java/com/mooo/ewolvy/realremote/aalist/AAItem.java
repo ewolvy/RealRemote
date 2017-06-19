@@ -28,7 +28,7 @@ public class AAItem {
         return temperature;
     }
 
-    public void setTemperature(int temperature) {
+    void setTemperature(int temperature) {
         this.temperature = temperature;
     }
 
@@ -36,7 +36,7 @@ public class AAItem {
         return mode;
     }
 
-    public void setMode(int mode) {
+    void setMode(int mode) {
         this.mode = mode;
     }
 
@@ -52,7 +52,7 @@ public class AAItem {
         return is_on;
     }
 
-    public void setIs_on(boolean is_on) {
+    void setIs_on(boolean is_on) {
         this.is_on = is_on;
     }
 

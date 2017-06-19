@@ -134,7 +134,6 @@ class SSLConnection {
         } catch (IOException e) {
             Log.e(LOG_TAG, "IO Exception: " + e.toString());
         }
-
         return jsonResponse;
     }
 }

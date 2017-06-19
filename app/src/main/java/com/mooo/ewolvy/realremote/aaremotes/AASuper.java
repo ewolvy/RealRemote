@@ -45,7 +45,7 @@ public abstract class AASuper {
     private int currentTemp;
 
     // Constructor
-    AASuper (){} // Empty constructor to prevent instantiating the class
+    AASuper (){} // Empty private constructor to prevent instantiating the class
 
     // Getters methods for variables //
     /*public String getServerPath(){

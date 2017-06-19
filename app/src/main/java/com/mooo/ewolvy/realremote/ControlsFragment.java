@@ -1,21 +1,24 @@
 package com.mooo.ewolvy.realremote;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mooo.ewolvy.realremote.aalist.AAItem;
 import com.mooo.ewolvy.realremote.aaremotes.*;
 import com.mooo.ewolvy.realremote.database.AirConditionersDBAccess;
 
+import static com.mooo.ewolvy.realremote.R.id.onOffSign;
+
 public class ControlsFragment extends Fragment {
     AASuper state;
-    SSLServer myServer;
     View fragView;
+    int position;
 
     public ControlsFragment(){}
 
@@ -86,7 +89,7 @@ public class ControlsFragment extends Fragment {
         // Get the item representation
         Bundle args = this.getArguments();
         if (args != null) {
-            int position = args.getInt(ARG_SECTION_NUMBER);
+            position = args.getInt(ARG_SECTION_NUMBER);
             state = AirConditionersDBAccess.getAASuper(getContext()).get(position);
         }
         updateView();
@@ -249,34 +252,19 @@ public class ControlsFragment extends Fragment {
     }
 
     public void offClick() {
-        if (myServer != null){
-            // Send the PowerOff code.
-            myServer.sendCode (state.getPowerOff(), getActivity().getApplicationContext(), state, (ImageView) fragView.findViewById(R.id.onOffSign));
-            AirConditionersDBAccess.modifyAASuper(state, getContext());
-        }else{
-            Toast toast = Toast.makeText(getActivity().getApplicationContext(), getString(R.string.server_data_missing), Toast.LENGTH_LONG);
-            toast.show();
-        }
+        doConnection connection = new doConnection();
+        connection.execute(state.getPowerOff());
     }
 
     public void sendClick() {
-        if (myServer != null){      // If the options were set, send the command, else ask the user to fullfill the settings
-            myServer.sendCode (state.getCommand(), getActivity().getApplicationContext(), state, (ImageView) fragView.findViewById(R.id.onOffSign));
-            AirConditionersDBAccess.modifyAASuper(state, getContext());
-        }else{
-            Toast toast = Toast.makeText(getActivity().getApplicationContext(), getString(R.string.server_data_missing), Toast.LENGTH_LONG);
-            toast.show();
-        }
+        doConnection connection = new doConnection();
+        connection.execute(state.getCommand());
     }
 
     public void swingClick() {
         if (state.getIsOn()) {      // If the system is on check to send command, else warn the user to switch on before activating / deactivating swing
-            if (myServer != null){  // If the options were set, send the swing command, else ask the user to fullfill the settings
-                myServer.sendCode (state.getSwing(), getActivity().getApplicationContext(), state, null);
-            }else{
-                Toast toast = Toast.makeText(getActivity().getApplicationContext(), getString(R.string.server_data_missing), Toast.LENGTH_LONG);
-                toast.show();
-            }
+            doConnection connection = new doConnection();
+            connection.execute(state.getSwing());
         }else{
             Toast toast = Toast.makeText(getActivity().getApplicationContext(), getString(R.string.is_off_message), Toast.LENGTH_LONG);
             toast.show();
@@ -311,9 +299,9 @@ public class ControlsFragment extends Fragment {
 
         // Set on/off sign visible if it's on, invisible if not
         if (state.getIsOn()) {
-            fragView.findViewById(R.id.onOffSign).setVisibility(View.VISIBLE);
+            fragView.findViewById(onOffSign).setVisibility(View.VISIBLE);
         }else{
-            fragView.findViewById(R.id.onOffSign).setVisibility(View.INVISIBLE);
+            fragView.findViewById(onOffSign).setVisibility(View.INVISIBLE);
         }
 
         // Set temperature text
@@ -336,6 +324,76 @@ public class ControlsFragment extends Fragment {
                 fragView.findViewById(R.id.fanLevel2).setVisibility(View.VISIBLE);
             case AASuper.LEVEL1_FAN:
                 fragView.findViewById(R.id.fanLevel1).setVisibility(View.VISIBLE);
+        }
+    }
+
+    private class doConnection extends AsyncTask<String, Void, String[]>{
+        private String fullAddress;
+        private AAItem item;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            item = AirConditionersDBAccess.getAAItems(getContext()).get(position);
+            fullAddress = item.getServer() + ":";
+            fullAddress = fullAddress + item.getPort();
+            fullAddress = fullAddress + "/";
+            fullAddress = fullAddress + item.getAlias();
+            fullAddress = fullAddress + "/";
+        }
+
+        @Override
+        protected String[] doInBackground(String... strings) {
+            fullAddress = fullAddress + strings[0];
+            String [] results = new String[2];
+            results[0] = SSLConnection.connect(fullAddress,
+                    item.getUsername(),
+                    item.getPassword(),
+                    item.getCertificate());
+            results[1] = strings[0];
+            // The string array results will provide two strings:
+            // The first one [0] will be the json response
+            // The second one [1] will be the code sent
+            return results;
+        }
+
+        @Override
+        protected void onPostExecute(String[] results) {
+            // The string array results will provide two strings:
+            // The first one [0] will be the json response
+            // The second one [1] will be the code sent
+            super.onPostExecute(results);
+            View onOffSign = fragView.findViewById(R.id.onOffSign);
+            if (results[1].equals(state.getPowerOff())){
+                if (results[0] != null) {
+                    if (onOffSign != null) {
+                        onOffSign.setVisibility(View.INVISIBLE);
+                        state.setOn(false);
+                        AirConditionersDBAccess.modifyAASuper(state, getContext());
+                    }
+                    state.setOn(false);
+                    Toast toast = Toast.makeText(getContext(), results[0], Toast.LENGTH_SHORT);
+                    toast.show();
+                }else{
+                    Toast toast = Toast.makeText(getContext(), getContext().getString(R.string.connection_error), Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            }else{
+                if (results[0] != null){
+                    if (onOffSign != null) {
+                        onOffSign.setVisibility(View.VISIBLE);
+                        state.setOn(true);
+                        AirConditionersDBAccess.modifyAASuper(state, getContext());
+                    }
+                    state.setOn(true);
+                    Toast toast = Toast.makeText(getContext (), results[0], Toast.LENGTH_SHORT);
+                    toast.show();
+                }else{
+                    Toast toast = Toast.makeText(getContext(), getContext().getString(R.string.connection_error), Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+
+            }
         }
     }
 }
