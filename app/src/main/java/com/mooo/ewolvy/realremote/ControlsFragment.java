@@ -13,8 +13,6 @@ import com.mooo.ewolvy.realremote.aalist.AAItem;
 import com.mooo.ewolvy.realremote.aaremotes.*;
 import com.mooo.ewolvy.realremote.database.AirConditionersDBAccess;
 
-import static com.mooo.ewolvy.realremote.R.id.onOffSign;
-
 public class ControlsFragment extends Fragment {
     AASuper state;
     View fragView;
@@ -40,7 +38,7 @@ public class ControlsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        fragView = inflater.inflate(R.layout.fragment_main, container, false);
+        fragView = inflater.inflate(R.layout.fragment_controls, container, false);
 
         // Set onClickListeners
         fragView.findViewById(R.id.modeButton).setOnClickListener(new View.OnClickListener() {
@@ -299,9 +297,9 @@ public class ControlsFragment extends Fragment {
 
         // Set on/off sign visible if it's on, invisible if not
         if (state.getIsOn()) {
-            fragView.findViewById(onOffSign).setVisibility(View.VISIBLE);
+            fragView.findViewById(R.id.onOffSign).setVisibility(View.VISIBLE);
         }else{
-            fragView.findViewById(onOffSign).setVisibility(View.INVISIBLE);
+            fragView.findViewById(R.id.onOffSign).setVisibility(View.INVISIBLE);
         }
 
         // Set temperature text
