@@ -1,4 +1,4 @@
-package com.mooo.ewolvy.realremote.database;
+package com.mooo.ewolvy.realremote.aadatabase;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,7 +10,7 @@ import com.mooo.ewolvy.realremote.aalist.AAItem;
 import com.mooo.ewolvy.realremote.aaremotes.AAKaysun;
 import com.mooo.ewolvy.realremote.aaremotes.AAProKlima;
 import com.mooo.ewolvy.realremote.aaremotes.AASuper;
-import com.mooo.ewolvy.realremote.database.AirConditionersContract.AvailableAA;
+import com.mooo.ewolvy.realremote.aadatabase.AirConditionersContract.AvailableAA;
 
 import java.util.ArrayList;
 import java.util.List;

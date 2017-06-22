@@ -19,8 +19,8 @@ import android.view.View;
 
 import com.mooo.ewolvy.realremote.R;
 import com.mooo.ewolvy.realremote.aaremotes.AASuper;
-import com.mooo.ewolvy.realremote.database.AirConditionersContract.AvailableAA;
-import com.mooo.ewolvy.realremote.database.AirConditionersDBAccess;
+import com.mooo.ewolvy.realremote.aadatabase.AirConditionersContract.AvailableAA;
+import com.mooo.ewolvy.realremote.aadatabase.AirConditionersDBAccess;
 
 import java.util.List;
 

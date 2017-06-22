@@ -26,7 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mooo.ewolvy.realremote.R;
-import com.mooo.ewolvy.realremote.database.AirConditionersContract.AvailableAA;
+import com.mooo.ewolvy.realremote.aadatabase.AirConditionersContract.AvailableAA;
 
 import java.io.File;
 import java.util.Objects;

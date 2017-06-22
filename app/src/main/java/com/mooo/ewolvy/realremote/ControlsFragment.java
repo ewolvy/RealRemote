@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import com.mooo.ewolvy.realremote.aalist.AAItem;
 import com.mooo.ewolvy.realremote.aaremotes.*;
-import com.mooo.ewolvy.realremote.database.AirConditionersDBAccess;
+import com.mooo.ewolvy.realremote.aadatabase.AirConditionersDBAccess;
 
 public class ControlsFragment extends Fragment {
     AASuper state;

@@ -13,7 +13,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.mooo.ewolvy.realremote.aaremotes.AASuper;
-import com.mooo.ewolvy.realremote.database.AirConditionersDBAccess;
+import com.mooo.ewolvy.realremote.aadatabase.AirConditionersDBAccess;
 
 import java.util.List;
 
