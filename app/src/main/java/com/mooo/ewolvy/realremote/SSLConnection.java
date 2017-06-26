@@ -35,20 +35,6 @@ class SSLConnection {
             // (could be from a resource or ByteArrayInputStream or ...)
             CertificateFactory cf = CertificateFactory.getInstance("X.509");
 
-            /*
-            // My CRT file that I put in the assets folder
-            // I got this file by following these steps:
-            // * Go to https://littlesvr.ca using Firefox
-            // * Click the padlock/More/Security/View Certificate/Details/Export
-            // * Saved the file as littlesvr.crt (type X.509 Certificate (PEM))
-            // The MainActivity.context is declared as:
-            // public static Context context;
-            // And initialized in MainActivity.onCreate() as:
-            // MainActivity.context = getApplicationContext();
-
-            // System.out.println("ca=" + ((X509Certificate) ca).getSubjectDN());
-            */
-
             // Check file availability
             String state = Environment.getExternalStorageState(new File(fileName));
             if (Objects.equals(state, Environment.MEDIA_MOUNTED) ||

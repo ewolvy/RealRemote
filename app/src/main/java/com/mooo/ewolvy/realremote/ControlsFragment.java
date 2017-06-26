@@ -170,6 +170,7 @@ public class ControlsFragment extends Fragment {
             }
             state.setMode(nextMode);
             AirConditionersDBAccess.modifyAASuper(state, getContext());
+            updateView();
         }
     }
 
@@ -207,24 +208,37 @@ public class ControlsFragment extends Fragment {
                 break;
 
             case AASuper.LEVEL3_FAN:
-                fanView = (TextView) fragView.findViewById(R.id.fanLevel1);
-                if (fanView != null) {
-                    fanView.setVisibility(View.INVISIBLE);
+                if (state.getMode() != AASuper.FAN_MODE) {
+                    fanView = (TextView) fragView.findViewById(R.id.fanLevel1);
+                    if (fanView != null) {
+                        fanView.setVisibility(View.INVISIBLE);
+                    }
+                    fanView = (TextView) fragView.findViewById(R.id.fanLevel2);
+                    if (fanView != null) {
+                        fanView.setVisibility(View.INVISIBLE);
+                    }
+                    fanView = (TextView) fragView.findViewById(R.id.fanLevel3);
+                    if (fanView != null) {
+                        fanView.setVisibility(View.INVISIBLE);
+                    }
+                    fanView = (TextView) fragView.findViewById(R.id.fanLevelAuto);
+                    if (fanView != null) {
+                        fanView.setVisibility(View.VISIBLE);
+                        state.setFan(AASuper.AUTO_FAN);
+                    }
+                    break;
+                }else{
+                    fanView = (TextView) fragView.findViewById(R.id.fanLevel2);
+                    if (fanView != null) {
+                        fanView.setVisibility(View.INVISIBLE);
+                    }
+                    fanView = (TextView) fragView.findViewById(R.id.fanLevel3);
+                    if (fanView != null) {
+                        fanView.setVisibility(View.INVISIBLE);
+                    }
+                    state.setFan(AASuper.LEVEL1_FAN);
+                    break;
                 }
-                fanView = (TextView) fragView.findViewById(R.id.fanLevel2);
-                if (fanView != null) {
-                    fanView.setVisibility(View.INVISIBLE);
-                }
-                fanView = (TextView) fragView.findViewById(R.id.fanLevel3);
-                if (fanView != null) {
-                    fanView.setVisibility(View.INVISIBLE);
-                }
-                fanView = (TextView) fragView.findViewById(R.id.fanLevelAuto);
-                if (fanView != null) {
-                    fanView.setVisibility(View.VISIBLE);
-                    state.setFan(AASuper.AUTO_FAN);
-                }
-                break;
         }
         AirConditionersDBAccess.modifyAASuper(state, getContext());
     }
@@ -305,7 +319,12 @@ public class ControlsFragment extends Fragment {
         // Set temperature text
         TextView tempView = (TextView) fragView.findViewById(R.id.tempView);
         String temperature = Integer.toString(state.getCurrentTemp());
-        if (tempView != null) tempView.setText (temperature);
+        // If temperature is not blocked show actual number, if it is blocked, show '--'
+        if (state.isActiveTemp()) {
+            if (tempView != null) tempView.setText(temperature);
+        }else{
+            if (tempView != null) tempView.setText("--");
+        }
 
         // Put all fan levels invisible, then set visible the active one(s)
         fragView.findViewById(R.id.fanLevel1).setVisibility(View.INVISIBLE);
