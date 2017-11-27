@@ -17,6 +17,7 @@ import android.transition.Fade;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.mooo.ewolvy.broadcastdiscovery.BroadcastDiscover;
 import com.mooo.ewolvy.realremote.R;
 import com.mooo.ewolvy.realremote.aaremotes.AASuper;
 import com.mooo.ewolvy.realremote.aadatabase.AirConditionersContract.AvailableAA;
@@ -29,6 +30,7 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
     private static final String BUNDLE_EXTRAS = "BUNDLE_EXTRAS";
     private static final int REQUEST_CODE_MODIFY = 1;
     private static final int REQUEST_CODE_NEW = 2;
+    private static final int REQUEST_CODE_BCD = 3;
 
     public static AAAdapter adapter;
     public static List<AAItem> listData;
@@ -38,8 +40,8 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.aa_list);
 
-        // Setup FAB to open EditorActivity
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        // Setup first FAB to open EditorActivity
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,9 +63,26 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
             }
         });
 
+        // Setup second FAB to open BroadcastDiscover
+        FloatingActionButton fab2 = findViewById(R.id.fab2);
+        fab2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AAListActivity.this, BroadcastDiscover.class);
+                Bundle extras = new Bundle();
+                extras.putString("broadcast.service", "REAL_REMOTE");
+                extras.putString("broadcast.port", "19103");
+                extras.putInt("broadcast.maxtimeout", 5000);
+
+                intent.putExtra(BUNDLE_EXTRAS, extras);
+
+                startActivityForResult(intent, REQUEST_CODE_BCD);
+            }
+        });
+
         listData = AirConditionersDBAccess.getAAItems(this);
 
-        RecyclerView recView = (RecyclerView) findViewById(R.id.rec_list);
+        RecyclerView recView = findViewById(R.id.rec_list);
         recView.setLayoutManager(new LinearLayoutManager(this));
 
         adapter = new AAAdapter(listData, this);
@@ -168,7 +187,7 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
             listData.add(newItem);
         }
 
-        if (resultCode == RESULT_OK) {
+        if ((requestCode == REQUEST_CODE_MODIFY || requestCode == REQUEST_CODE_NEW) && resultCode == RESULT_OK) {
             adapter.notifyDataSetChanged();
         }
     }

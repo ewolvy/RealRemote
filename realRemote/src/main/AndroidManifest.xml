@@ -35,7 +35,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mooo.ewolvy.realremote.aalist.AAEditItemActivity"/>
         </activity>
+
         <activity android:name="ar.com.daidalos.afiledialog.FileChooserActivity" />
+
+        <activity android:name="com.mooo.ewolvy.broadcastdiscovery.BroadcastDiscover" />
     </application>
 
 </manifest>

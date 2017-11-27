@@ -55,15 +55,15 @@ public class AAEditItemActivity extends AppCompatActivity implements View.OnClic
 
         Bundle extras = getIntent().getBundleExtra(BUNDLE_EXTRAS);
 
-        nameEdit = (EditText) findViewById(R.id.edit_name);
-        brandSpinner = (Spinner) findViewById(R.id.edit_brand);
-        serverEdit = (EditText) findViewById(R.id.edit_server);
-        portEdit = (EditText) findViewById(R.id.edit_port);
-        usernameEdit = (EditText) findViewById(R.id.edit_username);
-        passwordEdit = (EditText) findViewById(R.id.edit_password);
-        certificateButton = (Button) findViewById(R.id.edit_certificate_button);
-        certificateText = (TextView) findViewById(R.id.edit_certificate_text);
-        aliasEdit = (EditText) findViewById(R.id.edit_alias);
+        nameEdit = findViewById(R.id.edit_name);
+        brandSpinner = findViewById(R.id.edit_brand);
+        serverEdit = findViewById(R.id.edit_server);
+        portEdit = findViewById(R.id.edit_port);
+        usernameEdit = findViewById(R.id.edit_username);
+        passwordEdit = findViewById(R.id.edit_password);
+        certificateButton = findViewById(R.id.edit_certificate_button);
+        certificateText = findViewById(R.id.edit_certificate_text);
+        aliasEdit = findViewById(R.id.edit_alias);
 
         if (!Objects.equals(extras.getString(AvailableAA.COLUMN_NAME_NAME), "")) {
             nameEdit.setText(extras.getString(AvailableAA.COLUMN_NAME_NAME));

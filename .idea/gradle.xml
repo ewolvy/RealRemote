@@ -8,6 +8,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/broadcast_discovery" />
             <option value="$PROJECT_DIR$/libs/aFileDialog/library/app" />
             <option value="$PROJECT_DIR$/realRemote" />
           </set>
