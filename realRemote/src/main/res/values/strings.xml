@@ -45,14 +45,14 @@
     <string name="discard">Discard</string>
     <string name="keep_editing">Keep editing</string>
     <string name="edit_save">Save</string>
-    <string name="settings_certificate_button">Choose file...</string>
-    <string name="settings_addAA">Add new Air Conditioner</string>
+    <string name="settings_certificate_button">Choose file…</string>
+    <string name="settings_editAA">Edit air conditioner</string>
     <string name="confirm_delete_dialog_msg">Are you sure you want to remove this Air Conditioner?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="edit_incomplete_title">Error creating AC</string>
-    <string name="edit_incomplete_message">All fields must be fullfilled to add/modify an AC. Please review your settings and try again.</string>
-    <string name="ok">Ok</string>
+    <string name="edit_incomplete_message">All fields must be fulfilled to add/modify an AC. Please review your settings and try again.</string>
+    <string name="ok">OK</string>
     <string name="main_empty_database">There are no Air Conditioners set. Please go to settings and set your devices.</string>
     <string-array name="AAArray">
         <item>Kaysun</item>

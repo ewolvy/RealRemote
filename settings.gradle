@@ -1,2 +1,2 @@
-include ':app', ':aFileDialog'
+include ':realRemote', ':aFileDialog'
 project(':aFileDialog').projectDir = new File('libs/aFileDialog/library/app')

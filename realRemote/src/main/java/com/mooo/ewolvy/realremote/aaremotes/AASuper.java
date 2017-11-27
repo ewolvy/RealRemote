@@ -68,12 +68,7 @@ public abstract class AASuper {
     }
 
     // Setters methods for variables //
-    /*public void setServerPath(String serverPath){
-        this.serverPath = serverPath;
-    }
-    public void setCertificateFile(String certificateFile){
-        this.certificateFile = certificateFile;
-    }*/
+
     public void setOn (boolean on){this.isOn = on;}
     public boolean setMode(int mode) {
         if (mode < AUTO_MODE || mode > FAN_MODE) {

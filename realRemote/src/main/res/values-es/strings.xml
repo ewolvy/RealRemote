@@ -35,8 +35,8 @@
     <string name="keep_editing">Seguir editando</string>
     <string name="unsaved_changes_dialog_msg">¿Quieres descartar los cambios?</string>
     <string name="edit_save">Guardar</string>
-    <string name="settings_certificate_button">Elegir archivo...</string>
-    <string name="settings_addAA">Añadir aire acondicionado</string>
+    <string name="settings_certificate_button">Elegir archivo…</string>
+    <string name="settings_editAA">Editar aire acondicionado</string>
     <string name="confirm_delete_dialog_msg">¿Seguro que desea eliminar este aire acondicionado?</string>
     <string name="no">No</string>
     <string name="yes">Sí</string>
