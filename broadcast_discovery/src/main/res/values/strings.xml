@@ -1,0 +1,4 @@
+<resources>
+    <string name="bcd_app_name">Boradcast Discovery</string>
+    <string name="bcd_str_btn_search">Search…</string>
+</resources>
