@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/RealRemote.iml" filepath="$PROJECT_DIR$/RealRemote.iml" />
       <module fileurl="file://$PROJECT_DIR$/libs/aFileDialog/library/app/aFileDialog.iml" filepath="$PROJECT_DIR$/libs/aFileDialog/library/app/aFileDialog.iml" />
       <module fileurl="file://$PROJECT_DIR$/broadcast_discovery/broadcast_discovery.iml" filepath="$PROJECT_DIR$/broadcast_discovery/broadcast_discovery.iml" />
+      <module fileurl="file://C:\Users\Nieves\AndroidStudioProjects\RealRemote\broadcast_discovery\broadcast_discovery.iml" filepath="C:\Users\Nieves\AndroidStudioProjects\RealRemote\broadcast_discovery\broadcast_discovery.iml" />
       <module fileurl="file://$PROJECT_DIR$/realRemote/realRemote.iml" filepath="$PROJECT_DIR$/realRemote/realRemote.iml" />
     </modules>
   </component>

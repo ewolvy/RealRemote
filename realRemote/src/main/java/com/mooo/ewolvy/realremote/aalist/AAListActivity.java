@@ -14,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.transition.Fade;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -22,6 +23,10 @@ import com.mooo.ewolvy.realremote.R;
 import com.mooo.ewolvy.realremote.aaremotes.AASuper;
 import com.mooo.ewolvy.realremote.aadatabase.AirConditionersContract.AvailableAA;
 import com.mooo.ewolvy.realremote.aadatabase.AirConditionersDBAccess;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -70,7 +75,7 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
             public void onClick(View view) {
                 Intent intent = new Intent(AAListActivity.this, BroadcastDiscover.class);
                 Bundle extras = new Bundle();
-                extras.putString("broadcast.service", "REAL_REMOTE");
+                extras.putString("broadcast.service", "BROADCAST_REALREMOTE");
                 extras.putString("broadcast.port", "19103");
                 extras.putInt("broadcast.maxtimeout", 5000);
 
@@ -189,6 +194,40 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
 
         if ((requestCode == REQUEST_CODE_MODIFY || requestCode == REQUEST_CODE_NEW) && resultCode == RESULT_OK) {
             adapter.notifyDataSetChanged();
+        }
+
+        if (requestCode == REQUEST_CODE_BCD && resultCode == RESULT_OK){
+            // Log.d("PRUEBA", "RECIBIDO BCD");
+
+            String serverInfo = data.getStringExtra("broadcast.server");
+
+            try {
+                JSONObject jsonObject = new JSONObject(serverInfo);
+                JSONObject jsonRealRemote = jsonObject.getJSONObject("RealRemote");
+                int brand = jsonRealRemote.getInt("Brand");
+                String address = jsonRealRemote.getString("Address");
+                int port = jsonRealRemote.getInt("Port");
+                String alias = jsonRealRemote.getString("Alias");
+
+                Intent intent = new Intent(AAListActivity.this, AAEditItemActivity.class);
+                Bundle extras = new Bundle();
+                extras.putString(AvailableAA.COLUMN_NAME_NAME, alias);
+                extras.putInt(AvailableAA.COLUMN_NAME_BRAND, brand);
+                extras.putString(AvailableAA.COLUMN_NAME_SERVER, address);
+                extras.putInt(AvailableAA.COLUMN_NAME_PORT, port);
+                extras.putString(AvailableAA.COLUMN_NAME_USERNAME, "");
+                extras.putString(AvailableAA.COLUMN_NAME_PASSWORD, "");
+                extras.putString(AvailableAA.COLUMN_NAME_CERTIFICATE, "");
+                extras.putString(AvailableAA.COLUMN_NAME_ALIAS, alias);
+                extras.putInt(AvailableAA.COLUMN_NAME_POSITION, 0);
+
+                intent.putExtra(BUNDLE_EXTRAS, extras);
+
+                startActivityForResult(intent, REQUEST_CODE_NEW);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
