@@ -13,6 +13,9 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -47,6 +50,7 @@ public class BroadcastDiscover extends AppCompatActivity {
     int maxWaitTime;    // Can be initialized on starting Activity, default to 10000
 
     ArrayList<String> servers = new ArrayList<>();
+    ArrayList<String> serverData = new ArrayList<>();
     ArrayAdapter<String> arrayAdapter;
 
     @Override
@@ -204,7 +208,21 @@ public class BroadcastDiscover extends AppCompatActivity {
         @Override
         protected void onProgressUpdate(String... values) {
             super.onProgressUpdate(values);
-            servers.add(values[0]);
+            JSONObject jsonObject = null;
+            String description = null;
+            try {
+                jsonObject = new JSONObject(values[0]);
+                JSONObject jsonRealRemote = jsonObject.getJSONObject("RealRemote");
+                description = jsonRealRemote.getString("Description");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            serverData.add(values[0]);
+            if (description == null) {
+                servers.add(values[0]);
+            }else{
+                servers.add(description);
+            }
             arrayAdapter.notifyDataSetChanged();
         }
 
@@ -221,7 +239,7 @@ public class BroadcastDiscover extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         Intent intent = getIntent();
-                        intent.putExtra("broadcast.server", servers.get(i));
+                        intent.putExtra("broadcast.server", serverData.get(i));
                         setResult(RESULT_OK, intent);
                         finish();
                     }

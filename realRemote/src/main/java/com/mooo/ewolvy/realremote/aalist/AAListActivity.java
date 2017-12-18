@@ -14,7 +14,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.transition.Fade;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -24,7 +23,6 @@ import com.mooo.ewolvy.realremote.aaremotes.AASuper;
 import com.mooo.ewolvy.realremote.aadatabase.AirConditionersContract.AvailableAA;
 import com.mooo.ewolvy.realremote.aadatabase.AirConditionersDBAccess;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -197,13 +195,12 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
         }
 
         if (requestCode == REQUEST_CODE_BCD && resultCode == RESULT_OK){
-            // Log.d("PRUEBA", "RECIBIDO BCD");
-
             String serverInfo = data.getStringExtra("broadcast.server");
 
             try {
                 JSONObject jsonObject = new JSONObject(serverInfo);
                 JSONObject jsonRealRemote = jsonObject.getJSONObject("RealRemote");
+                String name = jsonRealRemote.getString("Name");
                 int brand = jsonRealRemote.getInt("Brand");
                 String address = jsonRealRemote.getString("Address");
                 int port = jsonRealRemote.getInt("Port");
@@ -211,7 +208,7 @@ public class AAListActivity extends AppCompatActivity implements AAAdapter.ItemC
 
                 Intent intent = new Intent(AAListActivity.this, AAEditItemActivity.class);
                 Bundle extras = new Bundle();
-                extras.putString(AvailableAA.COLUMN_NAME_NAME, alias);
+                extras.putString(AvailableAA.COLUMN_NAME_NAME, name);
                 extras.putInt(AvailableAA.COLUMN_NAME_BRAND, brand);
                 extras.putString(AvailableAA.COLUMN_NAME_SERVER, address);
                 extras.putInt(AvailableAA.COLUMN_NAME_PORT, port);
