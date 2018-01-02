@@ -22,7 +22,7 @@
     <string name="server_data_missing">Faltan los datos del servidor. Por favor, vaya a Preferencias para completarlos</string>
     <string name="send_description">Enviar código</string>
     <string name="onoff_description">Encendido / Apagado</string>
-    <string name="is_off_message">El sistema está apagado. No se puede cambiar el swing</string>
+    <string name="is_off_message">El sistema está apagado. No se pueden enviar comandos hasta que se encienda</string>
     <string name="action_settings">Opciones</string>
     <string name="settings_certificate_label">Archivo del certificado SSL</string>
     <string name="settings_file_label">Archivo de certificado</string>

@@ -91,4 +91,9 @@ public class AAKaysun extends AASuper {
     public String getPowerOff() {
         return OFF_CHAIN;
     }
+
+    @Override
+    public String getPowerOn() {
+        return getCommand();
+    }
 }

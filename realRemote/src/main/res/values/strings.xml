@@ -30,7 +30,7 @@
     <string name="server_data_missing">Server data is missing. Please go to settings and complete them</string>
     <string name="send_description">Send code</string>
     <string name="onoff_description">On / Off</string>
-    <string name="is_off_message">System is Off. Can\'t change swing</string>
+    <string name="is_off_message">System is Off. Can\'t send commands until is turned on</string>
     <string name="auto">Auto</string>
     <string name="action_settings">Settings</string>
     <string name="settings_file_label">Certificate file</string>

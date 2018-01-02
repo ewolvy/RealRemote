@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,10 +54,10 @@ public class ControlsFragment extends Fragment {
                 fanClick();
             }
         });
-        fragView.findViewById(R.id.offButton).setOnClickListener(new View.OnClickListener() {
+        fragView.findViewById(R.id.onOffButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                offClick();
+                onOffClick();
             }
         });
         fragView.findViewById(R.id.tempMinus).setOnClickListener(new View.OnClickListener() {
@@ -180,11 +181,11 @@ public class ControlsFragment extends Fragment {
         TextView fanView;
         switch (state.getFan()) {
             case AASuper.AUTO_FAN:
-                fanView = (TextView) fragView.findViewById(R.id.fanLevelAuto);
+                fanView = fragView.findViewById(R.id.fanLevelAuto);
                 if (fanView != null) {
                     fanView.setVisibility(View.INVISIBLE);
                 }
-                fanView = (TextView) fragView.findViewById(R.id.fanLevel1);
+                fanView = fragView.findViewById(R.id.fanLevel1);
                 if (fanView != null) {
                     fanView.setVisibility(View.VISIBLE);
                     state.setFan(AASuper.LEVEL1_FAN);
@@ -192,7 +193,7 @@ public class ControlsFragment extends Fragment {
                 break;
 
             case AASuper.LEVEL1_FAN:
-                fanView = (TextView) fragView.findViewById(R.id.fanLevel2);
+                fanView = fragView.findViewById(R.id.fanLevel2);
                 if (fanView != null) {
                     fanView.setVisibility(View.VISIBLE);
                     state.setFan(AASuper.LEVEL2_FAN);
@@ -200,7 +201,7 @@ public class ControlsFragment extends Fragment {
                 break;
 
             case AASuper.LEVEL2_FAN:
-                fanView = (TextView) fragView.findViewById(R.id.fanLevel3);
+                fanView = fragView.findViewById(R.id.fanLevel3);
                 if (fanView != null) {
                     fanView.setVisibility(View.VISIBLE);
                     state.setFan(AASuper.LEVEL3_FAN);
@@ -209,30 +210,30 @@ public class ControlsFragment extends Fragment {
 
             case AASuper.LEVEL3_FAN:
                 if (state.getMode() != AASuper.FAN_MODE) {
-                    fanView = (TextView) fragView.findViewById(R.id.fanLevel1);
+                    fanView = fragView.findViewById(R.id.fanLevel1);
                     if (fanView != null) {
                         fanView.setVisibility(View.INVISIBLE);
                     }
-                    fanView = (TextView) fragView.findViewById(R.id.fanLevel2);
+                    fanView = fragView.findViewById(R.id.fanLevel2);
                     if (fanView != null) {
                         fanView.setVisibility(View.INVISIBLE);
                     }
-                    fanView = (TextView) fragView.findViewById(R.id.fanLevel3);
+                    fanView = fragView.findViewById(R.id.fanLevel3);
                     if (fanView != null) {
                         fanView.setVisibility(View.INVISIBLE);
                     }
-                    fanView = (TextView) fragView.findViewById(R.id.fanLevelAuto);
+                    fanView = fragView.findViewById(R.id.fanLevelAuto);
                     if (fanView != null) {
                         fanView.setVisibility(View.VISIBLE);
                         state.setFan(AASuper.AUTO_FAN);
                     }
                     break;
                 }else{
-                    fanView = (TextView) fragView.findViewById(R.id.fanLevel2);
+                    fanView = fragView.findViewById(R.id.fanLevel2);
                     if (fanView != null) {
                         fanView.setVisibility(View.INVISIBLE);
                     }
-                    fanView = (TextView) fragView.findViewById(R.id.fanLevel3);
+                    fanView = fragView.findViewById(R.id.fanLevel3);
                     if (fanView != null) {
                         fanView.setVisibility(View.INVISIBLE);
                     }
@@ -246,7 +247,7 @@ public class ControlsFragment extends Fragment {
     public void tempMinusClick() {
         if (state.getCurrentTemp() > state.TEMP_MIN && state.isActiveTemp()){
             state.setMinusTemp();
-            TextView tempView = (TextView) fragView.findViewById(R.id.tempView);
+            TextView tempView = fragView.findViewById(R.id.tempView);
             String temperature = Integer.toString(state.getCurrentTemp());
             if (tempView != null) tempView.setText(temperature);
             AirConditionersDBAccess.modifyAASuper(state, getContext());
@@ -256,27 +257,43 @@ public class ControlsFragment extends Fragment {
     public void tempPlusClick() {
         if (state.getCurrentTemp() < state.TEMP_MAX && state.isActiveTemp()){
             state.setPlusTemp();
-            TextView tempView = (TextView) fragView.findViewById(R.id.tempView);
+            TextView tempView = fragView.findViewById(R.id.tempView);
             String temperature = Integer.toString(state.getCurrentTemp());
             if (tempView != null) tempView.setText(temperature);
             AirConditionersDBAccess.modifyAASuper(state, getContext());
         }
     }
 
-    public void offClick() {
+    /*public void offClick() {
         doConnection connection = new doConnection();
         connection.execute(state.getPowerOff());
+    }*/
+
+    public void onOffClick(){
+        if (state.getIsOn()){
+            doConnection connection = new doConnection();
+            connection.execute(state.getPowerOff(), "TURN_OFF");
+        }else{
+            doConnection connection = new doConnection();
+            connection.execute(state.getPowerOn(), "TURN_ON");
+        }
     }
 
     public void sendClick() {
-        doConnection connection = new doConnection();
-        connection.execute(state.getCommand());
+        if (state.getIsOn()) {      // If the system is on check to send command, else warn the user to switch on before sending swing command
+            doConnection connection = new doConnection();
+            connection.execute(state.getCommand(), "SEND");
+        }else{
+            Toast toast = Toast.makeText(getActivity().getApplicationContext(), getString(R.string.is_off_message), Toast.LENGTH_LONG);
+            toast.show();
+        }
+
     }
 
     public void swingClick() {
-        if (state.getIsOn()) {      // If the system is on check to send command, else warn the user to switch on before activating / deactivating swing
+        if (state.getIsOn()) {      // If the system is on check to send command, else warn the user to switch on before sending swing command
             doConnection connection = new doConnection();
-            connection.execute(state.getSwing());
+            connection.execute(state.getSwing(), "SWING");
         }else{
             Toast toast = Toast.makeText(getActivity().getApplicationContext(), getString(R.string.is_off_message), Toast.LENGTH_LONG);
             toast.show();
@@ -312,12 +329,16 @@ public class ControlsFragment extends Fragment {
         // Set on/off sign visible if it's on, invisible if not
         if (state.getIsOn()) {
             fragView.findViewById(R.id.onOffSign).setVisibility(View.VISIBLE);
+            ImageView onOffButton = fragView.findViewById(R.id.onOffButton);
+            onOffButton.setImageResource(R.drawable.onoff_on);
         }else{
             fragView.findViewById(R.id.onOffSign).setVisibility(View.INVISIBLE);
+            ImageView onOffButton = fragView.findViewById(R.id.onOffButton);
+            onOffButton.setImageResource(R.drawable.onoff_off);
         }
 
         // Set temperature text
-        TextView tempView = (TextView) fragView.findViewById(R.id.tempView);
+        TextView tempView = fragView.findViewById(R.id.tempView);
         String temperature = Integer.toString(state.getCurrentTemp());
         // If temperature is not blocked show actual number, if it is blocked, show '--'
         if (state.isActiveTemp()) {
@@ -362,26 +383,66 @@ public class ControlsFragment extends Fragment {
         @Override
         protected String[] doInBackground(String... strings) {
             fullAddress = fullAddress + strings[0];
-            String [] results = new String[2];
+            String [] results = new String[3];
             results[0] = SSLConnection.connect(fullAddress,
                     item.getUsername(),
                     item.getPassword(),
                     item.getCertificate());
             results[1] = strings[0];
-            // The string array results will provide two strings:
+            results[2] = strings[1];
+            // The string array results will provide three strings:
             // The first one [0] will be the json response
             // The second one [1] will be the code sent
+            // The third one [2] will be the button pressed (as received in strings[1])
             return results;
         }
 
         @Override
         protected void onPostExecute(String[] results) {
-            // The string array results will provide two strings:
+            // The string array results will provide three strings:
             // The first one [0] will be the json response
             // The second one [1] will be the code sent
+            // The third one [2] will be the button pressed (as received in strings[1])
             super.onPostExecute(results);
             View onOffSign = fragView.findViewById(R.id.onOffSign);
-            if (results[1].equals(state.getPowerOff())){
+            ImageView onOffButton = fragView.findViewById(R.id.onOffButton);
+            if (results[2].equals("TURN_OFF")){
+                if (results[0] != null) {
+                    if (onOffSign != null) {
+                        onOffSign.setVisibility(View.INVISIBLE);
+                        state.setOn(false);
+                        AirConditionersDBAccess.modifyAASuper(state, getContext());
+                    }
+                    if (onOffButton != null){
+                        onOffButton.setImageResource(R.drawable.onoff_off);
+                    }
+                    state.setOn(false);
+                    Toast toast = Toast.makeText(getContext(), results[0], Toast.LENGTH_SHORT);
+                    toast.show();
+                }else{
+                    Toast toast = Toast.makeText(getContext(), getContext().getString(R.string.connection_error), Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            }else{
+                if (results[0] != null){
+                    if (onOffSign != null) {
+                        onOffSign.setVisibility(View.VISIBLE);
+                        state.setOn(true);
+                        AirConditionersDBAccess.modifyAASuper(state, getContext());
+                    }
+                    if (onOffButton != null){
+                        onOffButton.setImageResource(R.drawable.onoff_on);
+                    }
+                    state.setOn(true);
+                    Toast toast = Toast.makeText(getContext (), results[0], Toast.LENGTH_SHORT);
+                    toast.show();
+                }else{
+                    Toast toast = Toast.makeText(getContext(), getContext().getString(R.string.connection_error), Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            }
+
+            /*if (results[1].equals(state.getPowerOff())){
                 if (results[0] != null) {
                     if (onOffSign != null) {
                         onOffSign.setVisibility(View.INVISIBLE);
@@ -409,8 +470,7 @@ public class ControlsFragment extends Fragment {
                     Toast toast = Toast.makeText(getContext(), getContext().getString(R.string.connection_error), Toast.LENGTH_SHORT);
                     toast.show();
                 }
-
-            }
+            }*/
         }
     }
 }

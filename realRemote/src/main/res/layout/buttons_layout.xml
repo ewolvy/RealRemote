@@ -65,12 +65,12 @@
         app:layout_constraintRight_toLeftOf="@+id/tempMiddle"/>
 
     <ImageView
-        android:id="@+id/offButton"
+        android:id="@+id/onOffButton"
         android:layout_width="48dp"
         android:layout_height="0dp"
         android:layout_centerHorizontal="true"
-        android:contentDescription="@string/off_description"
-        android:src="@drawable/off"
+        android:contentDescription="@string/onoff_description"
+        android:src="@drawable/onoff_off"
         android:layout_marginRight="156dp"
         android:layout_marginLeft="156dp"
         tools:layout_constraintTop_creator="1"
