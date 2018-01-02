@@ -7,7 +7,7 @@ public class AAProKlima extends AASuper{
     private static final String FAN_CODE = "FAN_";
 
     private final char[] FAN_MODES= {'0', '1', '2', '3', '4'};
-    private final String[] MODES = {"AUTO", "COOL", "DRY", "HEAT", "FAN"};
+    private final String[] MODES = {"AUTO", "COOL", "DRY", "HOT", "FAN"};
 
     public AAProKlima(int stateMode,
                       int stateFan,
