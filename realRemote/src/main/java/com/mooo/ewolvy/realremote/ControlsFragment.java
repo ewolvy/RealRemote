@@ -280,24 +280,28 @@ public class ControlsFragment extends Fragment {
     }
 
     public void sendClick() {
-        if (state.getIsOn()) {      // If the system is on check to send command, else warn the user to switch on before sending swing command
-            doConnection connection = new doConnection();
-            connection.execute(state.getCommand(), "SEND");
-        }else{
+        // if (state.getIsOn()) {      // If the system is on check to send command, else warn the user to switch on before sending swing command
+        // Won't check if system is on anymore, so if it was turned on by other means we can send commands anyway
+        doConnection connection = new doConnection();
+        connection.execute(state.getCommand(), "SEND");
+
+    /*}else{
             Toast toast = Toast.makeText(getActivity().getApplicationContext(), getString(R.string.is_off_message), Toast.LENGTH_LONG);
             toast.show();
-        }
+        }*/
 
     }
 
     public void swingClick() {
-        if (state.getIsOn()) {      // If the system is on check to send command, else warn the user to switch on before sending swing command
-            doConnection connection = new doConnection();
-            connection.execute(state.getSwing(), "SWING");
-        }else{
+        // if (state.getIsOn()) {      // If the system is on check to send command, else warn the user to switch on before sending swing command
+        // Won't check if system is on anymore, so if it was turned on by other means we can send commands anyway
+        doConnection connection = new doConnection();
+        connection.execute(state.getSwing(), "SWING");
+
+    /*}else{
             Toast toast = Toast.makeText(getActivity().getApplicationContext(), getString(R.string.is_off_message), Toast.LENGTH_LONG);
             toast.show();
-        }
+        }*/
     }
 
     public void updateView(){
@@ -406,40 +410,52 @@ public class ControlsFragment extends Fragment {
             super.onPostExecute(results);
             View onOffSign = fragView.findViewById(R.id.onOffSign);
             ImageView onOffButton = fragView.findViewById(R.id.onOffButton);
-            if (results[2].equals("TURN_OFF")){
-                if (results[0] != null) {
-                    if (onOffSign != null) {
-                        onOffSign.setVisibility(View.INVISIBLE);
+            switch (results[2]) {
+                case "TURN_OFF":
+                    if (results[0] != null) {
+                        if (onOffSign != null) {
+                            onOffSign.setVisibility(View.INVISIBLE);
+                            state.setOn(false);
+                            AirConditionersDBAccess.modifyAASuper(state, getContext());
+                        }
+                        if (onOffButton != null) {
+                            onOffButton.setImageResource(R.drawable.onoff_off);
+                        }
                         state.setOn(false);
-                        AirConditionersDBAccess.modifyAASuper(state, getContext());
+                        Toast toast = Toast.makeText(getContext(), results[0], Toast.LENGTH_SHORT);
+                        toast.show();
+                    } else {
+                        Toast toast = Toast.makeText(getContext(), getContext().getString(R.string.connection_error), Toast.LENGTH_SHORT);
+                        toast.show();
                     }
-                    if (onOffButton != null){
-                        onOffButton.setImageResource(R.drawable.onoff_off);
-                    }
-                    state.setOn(false);
-                    Toast toast = Toast.makeText(getContext(), results[0], Toast.LENGTH_SHORT);
-                    toast.show();
-                }else{
-                    Toast toast = Toast.makeText(getContext(), getContext().getString(R.string.connection_error), Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            }else{
-                if (results[0] != null){
-                    if (onOffSign != null) {
-                        onOffSign.setVisibility(View.VISIBLE);
+                    break;
+                case "TURN_ON":
+                    if (results[0] != null) {
+                        if (onOffSign != null) {
+                            onOffSign.setVisibility(View.VISIBLE);
+                            state.setOn(true);
+                            AirConditionersDBAccess.modifyAASuper(state, getContext());
+                        }
+                        if (onOffButton != null) {
+                            onOffButton.setImageResource(R.drawable.onoff_on);
+                        }
                         state.setOn(true);
-                        AirConditionersDBAccess.modifyAASuper(state, getContext());
+                        Toast toast = Toast.makeText(getContext(), results[0], Toast.LENGTH_SHORT);
+                        toast.show();
+                    } else {
+                        Toast toast = Toast.makeText(getContext(), getContext().getString(R.string.connection_error), Toast.LENGTH_SHORT);
+                        toast.show();
                     }
-                    if (onOffButton != null){
-                        onOffButton.setImageResource(R.drawable.onoff_on);
+                    break;
+                default:
+                    if (results[0] != null) {
+                        Toast toast = Toast.makeText(getContext(), results[0], Toast.LENGTH_SHORT);
+                        toast.show();
+                    } else {
+                        Toast toast = Toast.makeText(getContext(), getContext().getString(R.string.connection_error), Toast.LENGTH_SHORT);
+                        toast.show();
                     }
-                    state.setOn(true);
-                    Toast toast = Toast.makeText(getContext (), results[0], Toast.LENGTH_SHORT);
-                    toast.show();
-                }else{
-                    Toast toast = Toast.makeText(getContext(), getContext().getString(R.string.connection_error), Toast.LENGTH_SHORT);
-                    toast.show();
-                }
+                    break;
             }
 
             /*if (results[1].equals(state.getPowerOff())){
