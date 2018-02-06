@@ -58,4 +58,5 @@
         <item>Kaysun</item>
         <item>ProKlima</item>
     </string-array>
+    <string name="on_description">On</string>
 </resources>

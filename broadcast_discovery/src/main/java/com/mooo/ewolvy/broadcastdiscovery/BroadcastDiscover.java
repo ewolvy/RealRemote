@@ -212,8 +212,8 @@ public class BroadcastDiscover extends AppCompatActivity {
             String description = null;
             try {
                 jsonObject = new JSONObject(values[0]);
-                JSONObject jsonRealRemote = jsonObject.getJSONObject("RealRemote");
-                description = jsonRealRemote.getString("Description");
+                JSONObject jsonMETA = jsonObject.getJSONObject("META");
+                description = jsonMETA.getString("Description");
             } catch (JSONException e) {
                 e.printStackTrace();
             }

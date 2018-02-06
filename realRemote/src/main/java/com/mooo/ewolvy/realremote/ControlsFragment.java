@@ -59,6 +59,12 @@ public class ControlsFragment extends Fragment {
                 offClick();
             }
         });
+        fragView.findViewById(R.id.onButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                turnOnClick();
+            }
+        });
         fragView.findViewById(R.id.tempMinus).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -266,6 +272,11 @@ public class ControlsFragment extends Fragment {
     public void offClick() {
         doConnection connection = new doConnection();
         connection.execute(state.getPowerOff());
+    }
+
+    public void turnOnClick() {
+        doConnection connection = new doConnection();
+        connection.execute(state.getPowerOn());
     }
 
     public void sendClick() {

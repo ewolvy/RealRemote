@@ -1,13 +1,13 @@
 package com.mooo.ewolvy.realremote.aaremotes;
 
 public class AAProKlima extends AASuper{
-    private static final String SWING_CHAIN = "SWING";
-    private static final String POWER_CHAIN = "POWER";
+    private static final String SWING_CHAIN = "_SWING";
+    private static final String POWER_CHAIN = "_POWER";
     private static final String DRY_CODE = "DRY_";
     private static final String FAN_CODE = "FAN_";
 
     private final char[] FAN_MODES= {'0', '1', '2', '3', '4'};
-    private final String[] MODES = {"AUTO", "COOL", "DRY", "HEAT", "FAN"};
+    private final String[] MODES = {"AUTO", "COLD", "DRY", "HOT", "FAN"};
 
     public AAProKlima(int stateMode,
                       int stateFan,
@@ -25,11 +25,11 @@ public class AAProKlima extends AASuper{
 
         // Indicar que todos los modos están disponibles
         for (int x = 0; x<5; x++){AVAILABLE_MODES[x] = true;}
-        // Para pruebas deshabilitar un modo
-        // AVAILABLE_MODES[2] = false;
+        // Auto mode not available on this branch
+        AVAILABLE_MODES[0] = false;
 
         if (!setMode(stateMode)){
-            setMode (AUTO_MODE);
+            setMode (DRY_MODE);
         }
 
         setOn(stateOn);
@@ -74,11 +74,16 @@ public class AAProKlima extends AASuper{
 
     @Override
     public String getSwing() {
-        return SWING_CHAIN;
+        return getCommand() + SWING_CHAIN;
     }
 
     @Override
     public String getPowerOff() {
-        return POWER_CHAIN;
+        return getCommand() + POWER_CHAIN;
+    }
+
+    @Override
+    public String getPowerOn(){
+        return getCommand() + POWER_CHAIN;
     }
 }

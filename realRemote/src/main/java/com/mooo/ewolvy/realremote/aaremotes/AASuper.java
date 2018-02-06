@@ -156,4 +156,6 @@ public abstract class AASuper {
     public abstract String getSwing();
 
     public abstract String getPowerOff();
+
+    public abstract String getPowerOn();
 }
