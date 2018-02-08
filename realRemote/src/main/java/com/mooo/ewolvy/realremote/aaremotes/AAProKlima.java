@@ -29,7 +29,7 @@ public class AAProKlima extends AASuper{
         AVAILABLE_MODES[0] = false;
 
         if (!setMode(stateMode)){
-            setMode (DRY_MODE);
+            setMode (COOL_MODE);
         }
 
         setOn(stateOn);

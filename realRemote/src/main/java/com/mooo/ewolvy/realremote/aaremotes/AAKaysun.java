@@ -73,9 +73,9 @@ public class AAKaysun extends AASuper {
             command = command + REVERSE_TEMPS[getCurrentTemp()- TEMP_MIN];
             command = command + REVERSE_MODES[getMode()];
         }else{
-            command = command + TEMPS[TEMP_MAX + 1];
+            command = command + TEMPS[TEMP_MAX - TEMP_MIN + 1];
             command = command + MODES[getMode()];
-            command = command + REVERSE_TEMPS[TEMP_MAX + 1];
+            command = command + REVERSE_TEMPS[TEMP_MAX - TEMP_MIN + 1];
             command = command + REVERSE_MODES[getMode()];
         }
 
