@@ -38,10 +38,10 @@ public abstract class AASuper {
     // private String serverPath;
     // private String certificateFile;
     private boolean isOn;
-    private int currentMode;
-    private int currentFan;
-    private boolean activeFan;
-    private boolean activeTemp;
+    protected int currentMode;
+    protected int currentFan;
+    protected boolean activeFan;
+    protected boolean activeTemp;
     private int currentTemp;
 
     // Constructor
@@ -70,23 +70,9 @@ public abstract class AASuper {
     // Setters methods for variables //
 
     public void setOn (boolean on){this.isOn = on;}
-    public boolean setMode(int mode) {
-        if (mode < AUTO_MODE || mode > FAN_MODE) {
-            return false;
-        }else if (!AVAILABLE_MODES[mode]){
-            return false;
-        }else{
-            this.activeFan = mode != AUTO_MODE;
-            this.activeTemp = mode != FAN_MODE && mode != DRY_MODE;
-            this.currentMode = mode;
-        }
-        // If the fan is not active it must be set to auto
-        if (!this.activeFan) this.currentFan = AUTO_FAN;
-        // If the mode is FAN_MODE and the fan is set to AUTO, we must change it to a fixed level
-        if (mode == FAN_MODE && this.currentFan == AUTO_FAN) this.currentFan = LEVEL3_FAN;
 
-        return true;
-    }
+    public abstract boolean setMode(int mode);
+
     public boolean setFan(int fan) {
         if (fan < AUTO_FAN || fan > LEVEL3_FAN || !this.activeFan){
             return false;
