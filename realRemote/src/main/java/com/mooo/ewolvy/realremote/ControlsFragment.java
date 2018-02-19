@@ -13,6 +13,9 @@ import com.mooo.ewolvy.realremote.aalist.AAItem;
 import com.mooo.ewolvy.realremote.aaremotes.*;
 import com.mooo.ewolvy.realremote.aadatabase.AirConditionersDBAccess;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class ControlsFragment extends Fragment {
     AASuper state;
     View fragView;
@@ -186,11 +189,11 @@ public class ControlsFragment extends Fragment {
         TextView fanView;
         switch (state.getFan()) {
             case AASuper.AUTO_FAN:
-                fanView = (TextView) fragView.findViewById(R.id.fanLevelAuto);
+                fanView = fragView.findViewById(R.id.fanLevelAuto);
                 if (fanView != null) {
                     fanView.setVisibility(View.INVISIBLE);
                 }
-                fanView = (TextView) fragView.findViewById(R.id.fanLevel1);
+                fanView = fragView.findViewById(R.id.fanLevel1);
                 if (fanView != null) {
                     fanView.setVisibility(View.VISIBLE);
                     state.setFan(AASuper.LEVEL1_FAN);
@@ -198,7 +201,7 @@ public class ControlsFragment extends Fragment {
                 break;
 
             case AASuper.LEVEL1_FAN:
-                fanView = (TextView) fragView.findViewById(R.id.fanLevel2);
+                fanView = fragView.findViewById(R.id.fanLevel2);
                 if (fanView != null) {
                     fanView.setVisibility(View.VISIBLE);
                     state.setFan(AASuper.LEVEL2_FAN);
@@ -206,7 +209,7 @@ public class ControlsFragment extends Fragment {
                 break;
 
             case AASuper.LEVEL2_FAN:
-                fanView = (TextView) fragView.findViewById(R.id.fanLevel3);
+                fanView = fragView.findViewById(R.id.fanLevel3);
                 if (fanView != null) {
                     fanView.setVisibility(View.VISIBLE);
                     state.setFan(AASuper.LEVEL3_FAN);
@@ -215,30 +218,30 @@ public class ControlsFragment extends Fragment {
 
             case AASuper.LEVEL3_FAN:
                 if (state.getMode() != AASuper.FAN_MODE) {
-                    fanView = (TextView) fragView.findViewById(R.id.fanLevel1);
+                    fanView = fragView.findViewById(R.id.fanLevel1);
                     if (fanView != null) {
                         fanView.setVisibility(View.INVISIBLE);
                     }
-                    fanView = (TextView) fragView.findViewById(R.id.fanLevel2);
+                    fanView = fragView.findViewById(R.id.fanLevel2);
                     if (fanView != null) {
                         fanView.setVisibility(View.INVISIBLE);
                     }
-                    fanView = (TextView) fragView.findViewById(R.id.fanLevel3);
+                    fanView = fragView.findViewById(R.id.fanLevel3);
                     if (fanView != null) {
                         fanView.setVisibility(View.INVISIBLE);
                     }
-                    fanView = (TextView) fragView.findViewById(R.id.fanLevelAuto);
+                    fanView = fragView.findViewById(R.id.fanLevelAuto);
                     if (fanView != null) {
                         fanView.setVisibility(View.VISIBLE);
                         state.setFan(AASuper.AUTO_FAN);
                     }
                     break;
                 }else{
-                    fanView = (TextView) fragView.findViewById(R.id.fanLevel2);
+                    fanView = fragView.findViewById(R.id.fanLevel2);
                     if (fanView != null) {
                         fanView.setVisibility(View.INVISIBLE);
                     }
-                    fanView = (TextView) fragView.findViewById(R.id.fanLevel3);
+                    fanView = fragView.findViewById(R.id.fanLevel3);
                     if (fanView != null) {
                         fanView.setVisibility(View.INVISIBLE);
                     }
@@ -252,7 +255,7 @@ public class ControlsFragment extends Fragment {
     public void tempMinusClick() {
         if (state.getCurrentTemp() > state.TEMP_MIN && state.isActiveTemp()){
             state.setMinusTemp();
-            TextView tempView = (TextView) fragView.findViewById(R.id.tempView);
+            TextView tempView = fragView.findViewById(R.id.tempView);
             String temperature = Integer.toString(state.getCurrentTemp());
             if (tempView != null) tempView.setText(temperature);
             AirConditionersDBAccess.modifyAASuper(state, getContext());
@@ -262,7 +265,7 @@ public class ControlsFragment extends Fragment {
     public void tempPlusClick() {
         if (state.getCurrentTemp() < state.TEMP_MAX && state.isActiveTemp()){
             state.setPlusTemp();
-            TextView tempView = (TextView) fragView.findViewById(R.id.tempView);
+            TextView tempView = fragView.findViewById(R.id.tempView);
             String temperature = Integer.toString(state.getCurrentTemp());
             if (tempView != null) tempView.setText(temperature);
             AirConditionersDBAccess.modifyAASuper(state, getContext());
@@ -328,7 +331,7 @@ public class ControlsFragment extends Fragment {
         }
 
         // Set temperature text
-        TextView tempView = (TextView) fragView.findViewById(R.id.tempView);
+        TextView tempView = fragView.findViewById(R.id.tempView);
         String temperature = Integer.toString(state.getCurrentTemp());
         // If temperature is not blocked show actual number, if it is blocked, show '--'
         if (state.isActiveTemp()) {
@@ -392,6 +395,48 @@ public class ControlsFragment extends Fragment {
             // The second one [1] will be the code sent
             super.onPostExecute(results);
             View onOffSign = fragView.findViewById(R.id.onOffSign);
+
+            JSONObject jsonResponse = null;
+            boolean isOn = false;
+            int fan=99, mode=99, currentTemp=99;
+            try {
+                jsonResponse = new JSONObject(results[0]);
+                isOn = jsonResponse.getBoolean("isOn");
+                fan = jsonResponse.getInt("fan");
+                mode = jsonResponse.getInt("mode");
+                currentTemp = jsonResponse.getInt("currentTemp");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            if (jsonResponse != null){
+                if (fan == state.getFan() &&
+                        mode == state.getMode() &&
+                        currentTemp == state.getCurrentTemp()){
+                    if (isOn){
+                        if (onOffSign != null) {
+                            onOffSign.setVisibility(View.VISIBLE);
+                            state.setOn(true);
+                            AirConditionersDBAccess.modifyAASuper(state, getContext());
+                        }
+                    }else{
+                        if (onOffSign != null) {
+                            onOffSign.setVisibility(View.INVISIBLE);
+                            state.setOn(false);
+                            AirConditionersDBAccess.modifyAASuper(state, getContext());
+                        }
+                    }
+                    Toast toast = Toast.makeText(getContext(),getContext().getString(R.string.command_ok), Toast.LENGTH_SHORT);
+                    toast.show();
+                }else{
+                    Toast toast = Toast.makeText(getContext(),getContext().getString(R.string.ir_error), Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            }else{
+                Toast toast = Toast.makeText(getContext(), getContext().getString(R.string.connection_error), Toast.LENGTH_SHORT);
+                toast.show();
+            }
+            /*
             if (results[1].equals(state.getPowerOff())){
                 if (results[0] != null) {
                     if (onOffSign != null) {
@@ -420,8 +465,7 @@ public class ControlsFragment extends Fragment {
                     Toast toast = Toast.makeText(getContext(), getContext().getString(R.string.connection_error), Toast.LENGTH_SHORT);
                     toast.show();
                 }
-
-            }
+            }*/
         }
     }
 }

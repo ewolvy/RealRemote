@@ -38,10 +38,10 @@ public abstract class AASuper {
     // private String serverPath;
     // private String certificateFile;
     private boolean isOn;
-    protected int currentMode;
-    protected int currentFan;
-    protected boolean activeFan;
-    protected boolean activeTemp;
+    int currentMode;
+    int currentFan;
+    boolean activeFan;
+    boolean activeTemp;
     private int currentTemp;
 
     // Constructor
