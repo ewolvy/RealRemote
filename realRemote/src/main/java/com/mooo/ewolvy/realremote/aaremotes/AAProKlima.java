@@ -1,13 +1,13 @@
 package com.mooo.ewolvy.realremote.aaremotes;
 
 public class AAProKlima extends AASuper{
-    private static final String SWING_CHAIN = "SWING";
-    private static final String POWER_CHAIN = "POWER";
+    private static final String SWING_CHAIN = "_SWING";
+    private static final String POWER_CHAIN = "_POWER";
     private static final String DRY_CODE = "DRY_";
     private static final String FAN_CODE = "FAN_";
 
     private final char[] FAN_MODES= {'0', '1', '2', '3', '4'};
-    private final String[] MODES = {"AUTO", "COOL", "DRY", "HOT", "FAN"};
+    private final String[] MODES = {"AUTO", "COLD", "DRY", "HOT", "FAN"};
 
     public AAProKlima(int stateMode,
                       int stateFan,
@@ -25,11 +25,11 @@ public class AAProKlima extends AASuper{
 
         // Indicar que todos los modos están disponibles
         for (int x = 0; x<5; x++){AVAILABLE_MODES[x] = true;}
-        // Para pruebas deshabilitar un modo
-        // AVAILABLE_MODES[2] = false;
+        // Auto mode not available on this branch
+        AVAILABLE_MODES[0] = false;
 
         if (!setMode(stateMode)){
-            setMode (AUTO_MODE);
+            setMode (COOL_MODE);
         }
 
         setOn(stateOn);
@@ -73,12 +73,36 @@ public class AAProKlima extends AASuper{
     }
 
     @Override
+    public boolean setMode(int mode){
+        if (mode < AUTO_MODE || mode > FAN_MODE) {
+            return false;
+        }else if (!AVAILABLE_MODES[mode]){
+            return false;
+        }else{
+            this.activeFan = mode != AUTO_MODE;
+            this.activeTemp = mode != FAN_MODE && mode != DRY_MODE;
+            this.currentMode = mode;
+        }
+        // If the fan is not active it must be set to auto
+        if (!this.activeFan) this.currentFan = AUTO_FAN;
+        // If the mode is FAN_MODE and the fan is set to AUTO, we must change it to a fixed level
+        if (mode == FAN_MODE && this.currentFan == AUTO_FAN) this.currentFan = LEVEL3_FAN;
+
+        return true;
+    }
+
+    @Override
     public String getSwing() {
-        return SWING_CHAIN;
+        return getCommand() + SWING_CHAIN;
     }
 
     @Override
     public String getPowerOff() {
-        return POWER_CHAIN;
+        return getCommand() + POWER_CHAIN;
+    }
+
+    @Override
+    public String getPowerOn(){
+        return getCommand() + POWER_CHAIN;
     }
 }

@@ -65,14 +65,14 @@
         android:id="@+id/lineView"
         android:layout_width="1dp"
         android:layout_height="0dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
         android:layout_toEndOf="@id/modeListLayout"
         android:background="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/fanShowCurrent"
         app:layout_constraintLeft_toRightOf="@+id/dryMode"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/fanShowCurrent"
-        android:layout_marginBottom="8dp"
         app:layout_constraintVertical_bias="0.0" />
 
     <ImageView

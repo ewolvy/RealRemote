@@ -44,4 +44,7 @@
     <string name="edit_incomplete_title">Error creando AA</string>
     <string name="ok">De acuerdo</string>
     <string name="main_empty_database">No hay ningún Aire Acondicionado configurado. Por favor, vaya a opciones y configure sus aparatos.</string>
+    <string name="on_description">Encendido</string>
+    <string name="command_ok">Comando ejecutado correctamente</string>
+    <string name="ir_error">Comando enviado correctamente pero no se ha podido enviar al AA</string>
 </resources>

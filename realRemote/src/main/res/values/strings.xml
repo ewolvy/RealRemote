@@ -54,8 +54,11 @@
     <string name="edit_incomplete_message">All fields must be fulfilled to add/modify an AC. Please review your settings and try again.</string>
     <string name="ok">OK</string>
     <string name="main_empty_database">There are no Air Conditioners set. Please go to settings and set your devices.</string>
-    <string-array name="AAArray">
+    <string-array name="AAArray" translatable="false">
         <item>Kaysun</item>
         <item>ProKlima</item>
     </string-array>
+    <string name="on_description">On</string>
+    <string name="command_ok">Command executed correctly</string>
+    <string name="ir_error">Command sent correctly but could not send it to the AC</string>
 </resources>
