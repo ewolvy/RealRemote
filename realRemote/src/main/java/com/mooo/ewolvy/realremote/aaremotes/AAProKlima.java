@@ -2,7 +2,8 @@ package com.mooo.ewolvy.realremote.aaremotes;
 
 public class AAProKlima extends AASuper{
     private static final String SWING_CHAIN = "_SWING";
-    private static final String POWER_CHAIN = "_POWER";
+    private static final String POWER_ON_CHAIN = "_POWER_ON";
+    private static final String POWER_OFF_CHAIN = "_POWER_OFF";
     private static final String DRY_CODE = "DRY_";
     private static final String FAN_CODE = "FAN_";
 
@@ -98,11 +99,11 @@ public class AAProKlima extends AASuper{
 
     @Override
     public String getPowerOff() {
-        return getCommand() + POWER_CHAIN;
+        return getCommand() + POWER_OFF_CHAIN;
     }
 
     @Override
     public String getPowerOn(){
-        return getCommand() + POWER_CHAIN;
+        return getCommand() + POWER_ON_CHAIN;
     }
 }
