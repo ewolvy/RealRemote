@@ -93,7 +93,7 @@ class SSLConnection {
         return output.toString();
     }
 
-    public static String connect (String urlAddress, String username, String password, String certificate){
+    static String connect (String urlAddress, String username, String password, String certificate){
         HttpsURLConnection urlConnection = setUpHttpsConnection(urlAddress, certificate);
         String jsonResponse ="";
 
