@@ -377,7 +377,7 @@ public class ControlsFragment extends Fragment {
         protected String[] doInBackground(String... strings) {
             fullAddress = fullAddress + strings[0];
             String [] results = new String[2];
-            results[0] = SSLConnection.connect(fullAddress,
+            results[0] = SSLConnection.INSTANCE.connect(fullAddress,
                     item.getUsername(),
                     item.getPassword(),
                     item.getCertificate());
